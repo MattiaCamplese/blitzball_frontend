@@ -188,7 +188,7 @@ npm install
 ### 2. Configura ambiente
 Crea file `.env` nella root del progetto:
 ```env
-VITE_BACKEND_URL=http://localhost:8000/api
+VITE_BACKEND_URL=http://localhost:8000
 ```
 
 ### 3. Avvia sviluppo
