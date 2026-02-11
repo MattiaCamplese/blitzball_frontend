@@ -14,9 +14,11 @@ const TeamsPage = () => {
   const [rosterOpen, setRosterOpen] = useState(false);
 
   const filteredTeams =
-    teams?.filter((team) =>
-      team.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+    teams
+      ?.filter((team) =>
+        team.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => (b.tournaments_won ?? 0) - (a.tournaments_won ?? 0)) || [];
 
   const handleDelete = async (id: number, name: string) => {
     if (window.confirm(`Sei sicuro di voler eliminare ${name}?`)) {

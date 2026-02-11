@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@base-ui/react/button";
-import { useCreateAthlete } from "./athlete.hook";
+import { useCreateAthlete, useAthletes } from "./athlete.hook";
 import { Loader2, PlusIcon, User, Hash, MapPin, Calendar, Trophy } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 const CreateAthleteButton = () => {
   const [open, setOpen] = useState(false);
   const { mutate, isPending } = useCreateAthlete();
+  const { data: athletes } = useAthletes();
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -18,8 +19,30 @@ const CreateAthleteButton = () => {
     tournaments_won: 0,
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.birth_place.trim()) {
+      newErrors.birth_place = "Il luogo di nascita è obbligatorio";
+    }
+    if (!formData.birth_date) {
+      newErrors.birth_date = "La data di nascita è obbligatoria";
+    }
+    if (formData.fiscal_code && athletes?.some(
+      (a) => a.fiscal_code.toUpperCase() === formData.fiscal_code.toUpperCase()
+    )) {
+      newErrors.fiscal_code = "Codice fiscale già presente";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     mutate(formData, {
       onSuccess: () => {
         setOpen(false);
@@ -31,6 +54,16 @@ const CreateAthleteButton = () => {
           birth_date: "",
           tournaments_won: 0,
         });
+        setErrors({});
+      },
+      onError: (error) => {
+        if (error.message?.toLowerCase().includes("duplicate") ||
+            error.message?.toLowerCase().includes("fiscal_code") ||
+            error.message?.toLowerCase().includes("unique")) {
+          setErrors(prev => ({ ...prev, fiscal_code: "Codice fiscale già presente nel database" }));
+        } else {
+          setErrors(prev => ({ ...prev, fiscal_code: error.message || "Errore durante la creazione" }));
+        }
       },
     });
   };
@@ -94,38 +127,47 @@ const CreateAthleteButton = () => {
               Codice Fiscale *
             </label>
             <InputGroup>
-              <InputGroupInput type="text" name="fiscal_code" value={formData.fiscal_code} onChange={handleChange} placeholder="MRARSS80A01H501U" required maxLength={16} style={{ textTransform: 'uppercase' }} />
+              <InputGroupInput type="text" name="fiscal_code" value={formData.fiscal_code} onChange={(e) => { handleChange(e); setErrors(prev => ({ ...prev, fiscal_code: "" })); }} placeholder="MRARSS80A01H501U" required maxLength={16} style={{ textTransform: 'uppercase' }} />
               <InputGroupAddon>
                 <Hash className="h-4 w-4" />
               </InputGroupAddon>
             </InputGroup>
+            {errors.fiscal_code && (
+              <p className="text-red-500 text-sm mt-1">{errors.fiscal_code}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Luogo di Nascita */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Luogo di Nascita
+                Luogo di Nascita *
               </label>
               <InputGroup>
-                <InputGroupInput type="text" name="birth_place" value={formData.birth_place} onChange={handleChange} placeholder="Roma" />
+                <InputGroupInput type="text" name="birth_place" value={formData.birth_place} onChange={(e) => { handleChange(e); setErrors(prev => ({ ...prev, birth_place: "" })); }} placeholder="Roma" required />
                 <InputGroupAddon>
                   <MapPin className="h-4 w-4" />
                 </InputGroupAddon>
               </InputGroup>
+              {errors.birth_place && (
+                <p className="text-red-500 text-sm mt-1">{errors.birth_place}</p>
+              )}
             </div>
 
             {/* Data di Nascita */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Data di Nascita
+                Data di Nascita *
               </label>
               <InputGroup>
-                <InputGroupInput type="date" name="birth_date" value={formData.birth_date} onChange={handleChange} />
+                <InputGroupInput type="date" name="birth_date" value={formData.birth_date} onChange={(e) => { handleChange(e); setErrors(prev => ({ ...prev, birth_date: "" })); }} required />
                 <InputGroupAddon>
                   <Calendar className="h-4 w-4" />
                 </InputGroupAddon>
               </InputGroup>
+              {errors.birth_date && (
+                <p className="text-red-500 text-sm mt-1">{errors.birth_date}</p>
+              )}
             </div>
           </div>
 
