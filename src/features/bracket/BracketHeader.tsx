@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, MapPin, Users, Crown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import type { Tournament } from '../tournament/tournament.type';
 
 
@@ -19,10 +20,10 @@ const BracketHeader = ({ tournament, final, gamesCount, getTeamName }: BracketHe
 
   return (
     <div className="px-4 lg:px-8 mb-8">
-      <button onClick={() => navigate('/tournaments')} className="flex items-center gap-2 text-black hover:text-gray-600 mb-6 transition-colors group" >
+      <Button variant="ghost" onClick={() => navigate('/tournaments')} className="flex items-center gap-2 text-black hover:text-gray-600 mb-6 transition-colors group" >
         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
         <span>Torna ai tornei</span>
-      </button>
+      </Button>
 
       <div className="bg-gradient-to-r from-blue-900/50 to-blue-800/50 backdrop-blur-sm rounded-2xl p-6 border border-amber-400/30 shadow-2xl">
         <div className="flex items-center justify-between flex-wrap gap-4">

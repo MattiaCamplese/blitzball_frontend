@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Handshake, Trophy, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { useAthletes } from "@/features/athlete/athlete.hook";
 import { useTeams } from "@/features/team/team.hooks";
 import { useTournaments } from "@/features/tournament/tournament.hooks";
@@ -65,14 +66,14 @@ const HomePage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/tournaments">
-                  <button className="bg-[#0055A4] hover:bg-[#0066CC] text-black flex items-center gap-2 px-4 py-2 rounded">
+                  <Button className="bg-[#0055A4] hover:bg-[#0066CC] text-black flex items-center gap-2 px-4 py-2 rounded">
                     <Calendar className="w-5 h-5" /> New Tournament
-                  </button>
+                  </Button>
                 </Link>
                 <Link to="/halls_of_fame">
-                  <button className="border border-black flex items-center gap-2 px-4 py-2 rounded text-black">
+                  <Button variant="outline" className="border border-black flex items-center gap-2 px-4 py-2 rounded text-black">
                     <Trophy className="w-5 h-5 text-black" /> Hall of Fame
-                  </button>
+                  </Button>
                 </Link>
               </div>
             </div>

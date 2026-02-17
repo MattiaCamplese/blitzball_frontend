@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "@base-ui/react/button";
+import { Button } from "@/components/ui/button";
 import { useCreateAthlete, useAthletes } from "./athlete.hook";
-import { Loader2, PlusIcon, User, Hash, MapPin, Calendar, Trophy } from "lucide-react";
+import { Loader2, PlusIcon, User, Hash, MapPin, Calendar, Trophy, ImageIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -16,6 +16,7 @@ const CreateAthleteButton = () => {
     fiscal_code: "",
     birth_place: "",
     birth_date: "",
+    img: "",
     tournaments_won: 0,
   });
 
@@ -43,7 +44,10 @@ const CreateAthleteButton = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    mutate(formData, {
+    mutate({
+      ...formData,
+      img: formData.img.trim() === "" ? null : formData.img,
+    }, {
       onSuccess: () => {
         setOpen(false);
         setFormData({
@@ -52,14 +56,15 @@ const CreateAthleteButton = () => {
           fiscal_code: "",
           birth_place: "",
           birth_date: "",
+          img: "",
           tournaments_won: 0,
         });
         setErrors({});
       },
       onError: (error) => {
         if (error.message?.toLowerCase().includes("duplicate") ||
-            error.message?.toLowerCase().includes("fiscal_code") ||
-            error.message?.toLowerCase().includes("unique")) {
+          error.message?.toLowerCase().includes("fiscal_code") ||
+          error.message?.toLowerCase().includes("unique")) {
           setErrors(prev => ({ ...prev, fiscal_code: "Codice fiscale già presente nel database" }));
         } else {
           setErrors(prev => ({ ...prev, fiscal_code: error.message || "Errore durante la creazione" }));
@@ -171,6 +176,19 @@ const CreateAthleteButton = () => {
             </div>
           </div>
 
+          {/* Immagine */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Immagine
+            </label>
+            <InputGroup>
+              <InputGroupInput type="text" name="img" value={formData.img} onChange={handleChange} placeholder="Link dell'immagine" />
+              <InputGroupAddon>
+                <ImageIcon className="h-4 w-4" />
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
+          
           {/* Tornei Vinti */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -183,6 +201,8 @@ const CreateAthleteButton = () => {
               </InputGroupAddon>
             </InputGroup>
           </div>
+
+
 
           {/* Footer Buttons */}
           <div className="flex gap-3 pt-4 border-t">

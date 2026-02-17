@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { X, Plus, User, Calendar, Hash, Shield, Trash2, StopCircle, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
-import { Button } from '@base-ui/react/button';
+import { Button } from '@/components/ui/button';
 import type { Athlete } from './athlete.services';
 import { useTeams } from '../team/team.hooks';
 import { useCompositionsByAthlete, useCreateComposition, useDeleteComposition, useTerminateComposition } from '../composition/composition.hook';

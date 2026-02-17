@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trophy } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import type { Game } from '../game/game.type';
 import type { BracketColumn } from './bracket.utils';
 import MatchCard from './MatchCard';
@@ -40,12 +41,9 @@ const BracketGrid = ({
         <p className="text-gray-300 text-lg mb-4">
           Nessuna partita disponibile per questo torneo
         </p>
-        <button onClick={() => navigate('/tournaments')} className="text-amber-400 hover:text-amber-300 transition-colors underline" >  Torna ai tornei
-         
-         
-       
-        
-        </button>
+        <Button variant="link" onClick={() => navigate('/tournaments')} className="text-amber-400 hover:text-amber-300 transition-colors underline" >
+          Torna ai tornei
+        </Button>
       </div>
     );
   }

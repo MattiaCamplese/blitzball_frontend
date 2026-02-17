@@ -1,7 +1,10 @@
-import { Search, Trash2, Trophy, Users } from 'lucide-react';
+import { Search, Trash2, Trophy, Users, Pencil, Loader2, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
-import { useTeams, useDeleteTeam } from './team.hooks';
+import { useTeams, useDeleteTeam, useUpdateTeam } from './team.hooks';
 import CreateTeamButton from './CreateTeamButton';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import AnimatedTitle from '@/components/ui/title';
 import TeamRoster from './TeamRoster';
 import type { Team } from './team.type';
@@ -9,9 +12,44 @@ import type { Team } from './team.type';
 const TeamsPage = () => {
   const { data: teams, isLoading, error } = useTeams();
   const deleteTeam = useDeleteTeam();
+  const updateTeam = useUpdateTeam();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [rosterOpen, setRosterOpen] = useState(false);
+
+  // Modal edit
+  const [editTeam, setEditTeam] = useState<Team | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editForm, setEditForm] = useState({ name: '', logo: '' });
+
+  const openEdit = (e: React.MouseEvent, team: Team) => {
+    e.stopPropagation();
+    setEditTeam(team);
+    setEditForm({
+      name: team.name,
+      logo: team.logo || '',
+    });
+    setEditOpen(true);
+  };
+
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editTeam) return;
+    updateTeam.mutate({
+      id: editTeam.id,
+      data: {
+        ...editForm,
+        logo: editForm.logo.trim() === '' ? undefined : editForm.logo,
+      },
+    }, {
+      onSuccess: () => setEditOpen(false),
+      onError: () => alert("Errore durante la modifica"),
+    });
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const filteredTeams =
     teams
@@ -137,17 +175,29 @@ const TeamsPage = () => {
                   </div>
                 </div>
 
-                {/* DELETE */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(team.id, team.name);
-                  }}
-                  className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors"
-                  disabled={deleteTeam.isPending}
-                >
-                  <Trash2 className="w-4 h-4 text-black" />
-                </button>
+                {/* EDIT + DELETE */}
+                <div className="flex gap-1">
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={(e) => openEdit(e, team)}
+                    className="p-2 bg-[#0055A4]/50 rounded-lg hover:bg-[#0055A4] transition-colors"
+                  >
+                    <Pencil className="w-4 h-4 text-black" />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(team.id, team.name);
+                    }}
+                    className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors"
+                    disabled={deleteTeam.isPending}
+                  >
+                    <Trash2 className="w-4 h-4 text-black" />
+                  </Button>
+                </div>
               </div>
 
               {/* DIVIDER */}
@@ -187,6 +237,52 @@ const TeamsPage = () => {
         open={rosterOpen}
         onOpenChange={setRosterOpen}
       />
+
+      {/* EDIT DIALOG */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto [&>button]:text-black [&>button:hover]:text-red-700">
+          <DialogHeader className="text-gray-700 mb-2">
+            <DialogTitle>Modifica Team</DialogTitle>
+            <DialogDescription>Modifica i dati del team</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleEditSubmit} className="space-y-6 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Nome *</label>
+              <InputGroup>
+                <InputGroupInput type="text" name="name" value={editForm.name} onChange={handleEditChange} required />
+                <InputGroupAddon><Users className="h-4 w-4" /></InputGroupAddon>
+              </InputGroup>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Logo</label>
+              <InputGroup>
+                <InputGroupInput type="text" name="logo" value={editForm.logo} onChange={handleEditChange} placeholder="Link del logo" />
+                <InputGroupAddon><ImageIcon className="h-4 w-4" /></InputGroupAddon>
+              </InputGroup>
+            </div>
+
+            <div className="flex gap-3 pt-4 border-t">
+              <Button type="button" onClick={() => setEditOpen(false)} className="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300">
+                Annulla
+              </Button>
+              <Button type="submit" disabled={updateTeam.isPending} className="flex-1 flex items-center justify-center gap-2 text-gray-700">
+                {updateTeam.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Salvataggio...</span>
+                  </>
+                ) : (
+                  <>
+                    <Pencil className="h-4 w-4" />
+                    <span>Salva Modifiche</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

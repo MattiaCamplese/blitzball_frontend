@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTournaments, useDeleteTournament } from './tournament.hooks';
 import CreateTournamentButton from './CreateTournamentButton';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import AnimatedTitle from '@/components/ui/title';
 
 const TournamentsPage = () => {
@@ -61,7 +62,7 @@ const TournamentsPage = () => {
         <div className="bg-[#002F6C] rounded-2xl p-6 md:p-8 mb-8 border-2 border-[#FFD700]/30 shadow-2xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
             <div className="flex-1">
-              <AnimatedTitle parts={[ { text: "TOURNA", className: "text-white" }, { text: "MENTS", className: "text-yellow-300" }, ]}/>
+              <AnimatedTitle parts={[{ text: "TOURNA", className: "text-white" }, { text: "MENTS", className: "text-yellow-300" },]} />
               <p className="text-gray-300 text-sm sm:text-base">
                 Gestisci tutti i tornei registrati
               </p>
@@ -111,20 +112,16 @@ const TournamentsPage = () => {
                     <div className="text-white font-medium text-lg truncate">
                       {tournament.name}
                     </div>
-                    <div className={`text-xs mt-1 ${tournament.is_active ? 'text-green-400' : 'text-gray-400' }`} >
+                    <div className={`text-xs mt-1 ${tournament.is_active ? 'text-green-400' : 'text-gray-400'}`} >
                       {tournament.is_active ? 'In corso' : 'Terminato'}
                     </div>
                   </div>
                 </div>
 
                 {/* DELETE */}
-                <button
-                  onClick={() => handleDelete(tournament.id, tournament.name)}
-                  className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors"
-                  disabled={deleteTournament.isPending}
-                >
+                <Button variant="destructive" size="icon" onClick={() => handleDelete(tournament.id, tournament.name)} className="p-2 text-black-700 rounded-lg " disabled={deleteTournament.isPending} >
                   <Trash2 className="w-4 h-4 text-black-700" />
-                </button>
+                </Button>
               </div>
 
               {/* DIVIDER */}
@@ -151,11 +148,11 @@ const TournamentsPage = () => {
               </div>
 
               {/* BUTTON */}
-              <button
+              <Button
                 onClick={() => handleViewBracket(tournament.id)}
                 className="w-full bg-[#0055A4] hover:bg-[#FFD700] text-black hover:text-black py-2 rounded-lg transition-colors font-medium" >
                 Visualizza Bracket
-              </button>
+              </Button>
             </div>
           ))}
         </div>

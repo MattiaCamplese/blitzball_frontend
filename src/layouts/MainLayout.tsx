@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from "react-router-dom"
 import { Trophy, Calendar, Users, Award, Handshake, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState(false)
@@ -37,9 +38,9 @@ const MainLayout = () => {
                         )}
                     </Link>
                     {!collapsed && (
-                        <button onClick={() => setCollapsed(true)} className="text-white/70 hover:text-white transition-colors" >
+                        <Button variant="ghost" size="icon" onClick={() => setCollapsed(true)} className="text-white/70 hover:text-white transition-colors" >
                             <ChevronLeft className="w-4 h-4" />
-                        </button>
+                        </Button>
                     )}
                 </div>
 
@@ -75,11 +76,13 @@ const MainLayout = () => {
                 {/* Expand button at bottom when collapsed */}
                 {collapsed && (
                     <div className="p-4">
-                        <button
+                        <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => setCollapsed(false)}
                             className="mb-4 mx-auto p-3 text-white/70 hover:text-white hover:bg-[#002F6C] rounded-lg transition-all" >
                             <ChevronRight className="w-5 h-5" />
-                        </button>
+                        </Button>
                     </div>
                 )}
             </aside>

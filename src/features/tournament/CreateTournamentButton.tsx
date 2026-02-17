@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui/dialog';
 import { InputGroup, InputGroupAddon, InputGroupInput,} from '@/components/ui/input-group';
-import { Button } from '@base-ui/react/button';
+import { Button } from '@/components/ui/button';
 import { Loader2, PlusIcon, Trophy, Calendar, MapPin, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useCreateTournament, useGenerateBracket } from './tournament.hooks';
@@ -266,35 +266,37 @@ const CreateTournamentButton = () => {
           {/* Footer Buttons */}
           <div className="flex gap-2 mt-6">
             {step === 'teams' && (
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={handleBack}
                 className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Indietro
-              </button>
+              </Button>
             )}
 
             {step === 'info' ? (
               <>
-                <button
+                <Button
                   type="button"
+                  variant="secondary"
                   onClick={() => setOpen(false)}
                   className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                 >
                   Annulla
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={handleNext}
                   disabled={!formData.name || !formData.start_date}
                   className="flex-1 px-4 py-2 bg-[#0055A4] text-gray-700 rounded-lg hover:bg-[#003d7a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Avanti
-                </button>
+                </Button>
               </>
             ) : (
-              <button
+              <Button
                 type="submit"
                 disabled={
                   isCreating ||
@@ -314,7 +316,7 @@ const CreateTournamentButton = () => {
                     Crea Torneo
                   </>
                 )}
-              </button>
+              </Button>
             )}
           </div>
         </form>

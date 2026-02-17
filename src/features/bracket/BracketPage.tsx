@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Trophy } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { useBracket, useTournament, useTournamentFinal, useUpdateGameResult } from '../tournament/tournament.hooks';
 import { useTeams } from '../team/team.hooks';
@@ -109,9 +110,9 @@ const BracketPage = () => {
         <div className="text-center">
           <Trophy className="w-20 h-20 text-gray-700 mx-auto mb-4" />
           <div className="text-white text-xl mb-2">Torneo non trovato</div>
-          <button onClick={() => navigate('/tournaments')} className="text-amber-400 hover:text-amber-300 transition-colors underline" >
+          <Button variant="link" onClick={() => navigate('/tournaments')} className="text-amber-400 hover:text-amber-300 transition-colors underline" >
             Torna ai tornei
-          </button>
+          </Button>
         </div>
       </div>
     );

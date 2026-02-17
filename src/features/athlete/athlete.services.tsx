@@ -10,6 +10,7 @@ export const athleteSchema = z.object({
   last_name: z.string(),
   birth_place: z.string().optional().nullable(),
   birth_date: z.string().optional().nullable(),
+  img: z.string().optional().nullable(),
   tournaments_won: z.number(),
   created_at: z.string(),
   updated_at: z.string(),
@@ -24,6 +25,7 @@ export const athleteCreateSchema = athleteSchema.omit({
   updated_at: true,
 }).extend({
   tournaments_won: z.number().default(0).optional(),
+  img: z.string().optional().nullable(),
 });
 
 export type AthleteCreate = z.infer<typeof athleteCreateSchema>;

@@ -1,4 +1,5 @@
 import { Trophy, Save, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import type { Game } from '../game/game.type';
 import TeamRow from './TeamRow';
 
@@ -88,7 +89,7 @@ const MatchCard = ({
       </div>
 
       {canEdit && hasChanges && (
-        <button
+        <Button
           onClick={onSave}
           disabled={isSaving}
           className={`w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 disabled:from-gray-600 disabled:to-gray-700 text-white rounded-lg flex items-center justify-center gap-1.5 font-semibold transition-all shadow-lg hover:shadow-xl ${
@@ -110,7 +111,7 @@ const MatchCard = ({
               {isFinal ? 'Salva Risultato' : 'Salva'}
             </>
           )}
-        </button>
+        </Button>
       )}
 
       {game.completed && (

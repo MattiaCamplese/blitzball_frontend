@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { InputGroup, InputGroupAddon, InputGroupInput, } from "@/components/ui/input-group";
-import { Button } from "@base-ui/react/button";
+import { Button } from "@/components/ui/button";
 import { Loader2, PlusIcon, Trophy, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCreateTeam } from "./team.hooks";

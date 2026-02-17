@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Trophy, ArrowLeft, Calendar, MapPin, Users, Edit2, Check, X, Crown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useBracket, useTournament, useTournamentFinal, useUpdateGameResult } from '../tournament/tournament.hooks';
 import { useTeams } from '../team/team.hooks';
@@ -139,10 +140,10 @@ const BracketPage = () => {
       <div className="relative z-10 py-8">
         {/* HEADER */}
         <div className="px-4 lg:px-8 mb-8">
-          <button onClick={() => navigate('/tournaments')} className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors" >
+          <Button variant="ghost" onClick={() => navigate('/tournaments')} className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors" >
             <ArrowLeft className="w-5 h-5" />
             <span>Torna ai tornei</span>
-          </button>
+          </Button>
 
           {/* TITLE SECTION */}
           <div className="bg-gradient-to-r from-[#002F6C] to-[#0055A4] rounded-2xl p-6 border border-[#FFD700]/30 shadow-2xl">
@@ -511,13 +512,15 @@ const MatchCard = ({
       >
         {/* Edit button */}
         {!game.completed && game.home_team_fk && game.away_team_fk && (
-          <button
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => handleEditGame(game)}
             className="absolute top-2 right-2 p-1.5 bg-[#FFD700]/20 hover:bg-[#FFD700]/30 rounded transition-colors z-10"
             disabled={editingGame !== null && editingGame !== game.id}
           >
             <Edit2 className="w-3.5 h-3.5 text-[#FFD700]" />
-          </button>
+          </Button>
         )}
 
         {/* Match number */}
@@ -557,22 +560,23 @@ const MatchCard = ({
         {/* Edit Actions */}
         {editingGame === game.id && (
           <div className="flex gap-1.5 mt-3">
-            <button
+            <Button
               onClick={() => handleSaveScore(game.id)}
               className="flex-1 bg-green-600 hover:bg-green-700 text-white py-1.5 rounded text-xs flex items-center justify-center gap-1 font-medium transition-colors"
               disabled={updateGame.isPending}
             >
               <Check className="w-3.5 h-3.5" />
               Salva
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
               onClick={handleCancelEdit}
               className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-1.5 rounded text-xs flex items-center justify-center gap-1 font-medium transition-colors"
               disabled={updateGame.isPending}
             >
               <X className="w-3.5 h-3.5" />
               Annulla
-            </button>
+            </Button>
           </div>
         )}
 

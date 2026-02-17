@@ -1,8 +1,11 @@
-import { Search, Trash2, Trophy, Users } from 'lucide-react';
+import { Search, Trash2, Trophy, Users, Pencil, Loader2, ImageIcon, MapPin, Calendar, PencilLine } from 'lucide-react';
 import { useState } from 'react';
-import { useAthletes, useDeleteAthlete } from './athlete.hook';
+import { useAthletes, useDeleteAthlete, useUpdateAthlete } from './athlete.hook';
 import type { Athlete } from './athlete.services';
 import CreateAthleteButton from './CreateAthleteButton';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 
 import AnimatedTitle from '@/components/ui/title';
 import AthleteDetailModal from './AthleteSchedeSimple';
@@ -10,15 +13,56 @@ import AthleteDetailModal from './AthleteSchedeSimple';
 const AthletesPage = () => {
   const { data: athletes, isLoading, error } = useAthletes();
   const deleteAthlete = useDeleteAthlete();
+  const updateAthlete = useUpdateAthlete();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Modal
+  // Modal detail
   const [selectedAthlete, setSelectedAthlete] = useState<Athlete | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Modal edit
+  const [editAthlete, setEditAthlete] = useState<Athlete | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editForm, setEditForm] = useState({ first_name: '', last_name: '', fiscal_code: '', birth_place: '', birth_date: '', img: '' });
 
   const openDetail = (athlete: Athlete) => {
     setSelectedAthlete(athlete);
     setModalOpen(true);
+  };
+
+  const openEdit = (e: React.MouseEvent, athlete: Athlete) => {
+    e.stopPropagation();
+    setEditAthlete(athlete);
+    setEditForm({
+      first_name: athlete.first_name,
+      last_name: athlete.last_name,
+      fiscal_code: athlete.fiscal_code,
+      birth_place: athlete.birth_place || '',
+      birth_date: athlete.birth_date || '',
+      img: athlete.img || '',
+    });
+    setEditOpen(true);
+  };
+
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editAthlete) return;
+    updateAthlete.mutate({
+      id: editAthlete.id,
+      data: {
+        ...editForm,
+        img: editForm.img.trim() === '' ? null : editForm.img,
+        birth_place: editForm.birth_place.trim() === '' ? null : editForm.birth_place,
+        birth_date: editForm.birth_date === '' ? null : editForm.birth_date,
+      },
+    }, {
+      onSuccess: () => setEditOpen(false),
+      onError: () => alert("Errore durante la modifica"),
+    });
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const filteredAthletes = athletes?.filter(athlete =>
@@ -113,8 +157,20 @@ const AthletesPage = () => {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <div className="bg-[#0055A4] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Users className="w-6 h-6 text-[#FFD700]" />
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-[#0055A4] flex items-center justify-center flex-shrink-0">
+                    {athlete.img ? (
+                      <img
+                        src={athlete.img}
+                        alt={`${athlete.first_name} ${athlete.last_name}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display = 'none';
+                          e.currentTarget.parentElement!.classList.add('fallback-icon');
+                        }}
+                      />
+                    ) : (
+                      <Users className="w-6 h-6 text-[#FFD700]" />
+                    )}
                   </div>
                   <div className="min-w-0">
                     <div className="text-white font-medium text-lg truncate">
@@ -123,15 +179,16 @@ const AthletesPage = () => {
                     <div className="text-gray-400 text-xs truncate">{athlete.fiscal_code}</div>
                   </div>
                 </div>
-                <button
-                  onClick={(e) => handleDelete(e, athlete.id, `${athlete.first_name} ${athlete.last_name}`)}
-                  className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors ml-2"
-                  disabled={deleteAthlete.isPending}
-                >
-                  <Trash2 className="w-4 h-4 text-gray-700" />
-                </button>
+                <div className="flex gap-1 ml-2">
+                  <Button variant="destructive" size="icon" onClick={(e) => openEdit(e, athlete)} className="p-2 bg-[#0055A4]/50 rounded-lg hover:bg-[#0055A4] transition-colors" >
+                    <Pencil className="w-4 h-4 text-gray-700" />
+                  </Button>
+                  <Button variant="destructive" size="icon" onClick={(e) => handleDelete(e, athlete.id, `${athlete.first_name} ${athlete.last_name}`)} className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors" disabled={deleteAthlete.isPending} >
+                    <Trash2 className="w-4 h-4 text-gray-700" />
+                  </Button>
+                </div>
               </div>
-
+              
               <div className="space-y-2 text-sm">
                 {athlete.birth_date && (
                   <div className="text-gray-500">
@@ -145,7 +202,7 @@ const AthletesPage = () => {
                     Luogo: <span className="text-gray-400">{athlete.birth_place}</span>
                   </div>
                 )}
-                
+
                 <div className="flex items-center gap-2 text-[#FFD700] pt-2 border-t border-gray-700">
                   <Trophy className="w-4 h-4" />
                   <span className="font-medium">
@@ -174,6 +231,86 @@ const AthletesPage = () => {
       </div>
 
       <AthleteDetailModal athlete={selectedAthlete} open={modalOpen} onOpenChange={setModalOpen} />
+
+      {/* EDIT DIALOG */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:text-black [&>button:hover]:text-red-700">
+          <DialogHeader className="text-gray-700 mb-2">
+            <DialogTitle>Modifica Atleta</DialogTitle>
+            <DialogDescription>Modifica i dati dell'atleta</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleEditSubmit} className="space-y-6 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nome *</label>
+                <InputGroup>
+                  <InputGroupInput type="text" name="first_name" value={editForm.first_name} onChange={handleEditChange} required />
+                  <InputGroupAddon><Users className="h-4 w-4" /></InputGroupAddon>
+                </InputGroup>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Cognome *</label>
+                <InputGroup>
+                  <InputGroupInput type="text" name="last_name" value={editForm.last_name} onChange={handleEditChange} required />
+                  <InputGroupAddon><Users className="h-4 w-4" /></InputGroupAddon>
+                </InputGroup>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Codice Fiscale *</label>
+              <InputGroup>
+                <InputGroupInput type="text" name="fiscal_code" value={editForm.fiscal_code} onChange={handleEditChange} required maxLength={16} style={{ textTransform: 'uppercase' }} />
+                <InputGroupAddon><Search className="h-4 w-4" /></InputGroupAddon>
+              </InputGroup>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Luogo di Nascita</label>
+                <InputGroup>
+                  <InputGroupInput type="text" name="birth_place" value={editForm.birth_place} onChange={handleEditChange} />
+                  <InputGroupAddon><MapPin className="h-4 w-4" /></InputGroupAddon>
+                </InputGroup>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Data di Nascita</label>
+                <InputGroup>
+                  <InputGroupInput type="date" name="birth_date" value={editForm.birth_date} onChange={handleEditChange} />
+                  <InputGroupAddon><Calendar className="h-4 w-4" /></InputGroupAddon>
+                </InputGroup>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Immagine</label>
+              <InputGroup>
+                <InputGroupInput type="text" name="img" value={editForm.img} onChange={handleEditChange} placeholder="Link dell'immagine" />
+                <InputGroupAddon><ImageIcon className="h-4 w-4" /></InputGroupAddon>
+              </InputGroup>
+            </div>
+
+            <div className="flex gap-3 pt-4 border-t">
+              <Button type="button" onClick={() => setEditOpen(false)} className="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300">
+                Annulla
+              </Button>
+              <Button type="submit" disabled={updateAthlete.isPending} className="flex-1 flex items-center justify-center gap-2 text-gray-700">
+                {updateAthlete.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Salvataggio...</span>
+                  </>
+                ) : (
+                  <>
+                    <Pencil className="h-4 w-4" />
+                    <span>Salva Modifiche</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
