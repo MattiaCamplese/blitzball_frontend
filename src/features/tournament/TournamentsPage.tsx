@@ -4,6 +4,7 @@ import { useTournaments, useDeleteTournament } from './tournament.hooks';
 import CreateTournamentButton from './CreateTournamentButton';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import AnimatedTitle from '@/components/ui/title';
 
 const TournamentsPage = () => {
@@ -11,10 +12,12 @@ const TournamentsPage = () => {
   const deleteTournament = useDeleteTournament();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [showActive, setShowActive] = useState(true);
 
   const filteredTournaments =
     tournaments?.filter((tournament) =>
-      tournament.name.toLowerCase().includes(searchTerm.toLowerCase())
+      tournament.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (showActive ? tournament.is_active : !tournament.is_active)
     ).sort((a, b) => b.id - a.id) || [];
 
   const handleDelete = async (id: number, name: string) => {
@@ -82,17 +85,30 @@ const TournamentsPage = () => {
         </div>
 
         {/* COUNTER */}
-        <div className="bg-[#001a3d] rounded-xl p-4 mb-6 border border-gray-700 text-gray-400 text-sm flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
-          <span>
+        <div className="bg-[#001a3d] rounded-xl p-6 mb-6 border border-gray-700 text-gray-400 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+          <span className="text-base">
             Totale tornei:{' '}
-            <span className="text-white font-bold">{tournaments?.length || 0}</span>
+            <span className="text-white font-bold text-lg">{tournaments?.length || 0}</span>
+            {searchTerm && (
+              <span className="ml-4">
+                Filtrati:{' '}
+                <span className="text-[#FFD700] font-bold text-lg">{filteredTournaments.length}</span>
+              </span>
+            )}
           </span>
-          {searchTerm && (
-            <span>
-              Filtrati:{' '}
-              <span className="text-[#FFD700] font-bold">{filteredTournaments.length}</span>
+          <div className="flex items-center gap-4">
+            <span className={`text-base font-semibold ${showActive ? 'text-green-400' : 'text-gray-500'}`}>
+              Attivi
             </span>
-          )}
+            <Switch
+              size="lg"
+              checked={!showActive}
+              onCheckedChange={(checked) => setShowActive(!checked)}
+            />
+            <span className={`text-base font-semibold ${!showActive ? 'text-white' : 'text-gray-500'}`}>
+              Terminati
+            </span>
+          </div>
         </div>
 
         {/* GRID TOURNAMENTS */}

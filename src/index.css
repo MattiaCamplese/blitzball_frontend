@@ -67,6 +67,10 @@ body {
   width: 100%;
 }
 
+.dark body {
+  background: oklch(0.145 0 0);
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

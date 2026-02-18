@@ -180,11 +180,11 @@ const AthletesPage = () => {
                   </div>
                 </div>
                 <div className="flex gap-1 ml-2">
-                  <Button variant="destructive" size="icon" onClick={(e) => openEdit(e, athlete)} className="p-2 bg-[#0055A4]/50 rounded-lg hover:bg-[#0055A4] transition-colors" >
-                    <Pencil className="w-4 h-4 text-gray-700" />
+                  <Button variant="destructive" size="icon" onClick={(e) => openEdit(e, athlete)} className="p-2 bg-[#0055A4]/50 rounded-lg hover:bg-[#0055A4] transition-colors">
+                    <Pencil className="w-4 h-4 text-black" />
                   </Button>
-                  <Button variant="destructive" size="icon" onClick={(e) => handleDelete(e, athlete.id, `${athlete.first_name} ${athlete.last_name}`)} className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors" disabled={deleteAthlete.isPending} >
-                    <Trash2 className="w-4 h-4 text-gray-700" />
+                  <Button variant="destructive" size="icon" onClick={(e) => handleDelete(e, athlete.id, `${athlete.first_name} ${athlete.last_name}`)} disabled={deleteAthlete.isPending} className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors">
+                    <Trash2 className="w-4 h-4 text-black" />
                   </Button>
                 </div>
               </div>

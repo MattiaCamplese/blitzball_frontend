@@ -13,7 +13,7 @@ const MainLayout = () => {
         { to: "/athletes", icon: Users, label: "Athletes" },
         { to: "/teams", icon: Handshake, label: "Teams" },
         { to: "/tournaments", icon: Trophy, label: "Tournaments" },
-        { to: "/halls_of_fame", icon: Award, label: "Hall of Fame", highlight: true },
+        { to: "/halls_of_fame", icon: Award, label: "Hall of Fame" },
     ]
 
     return (
@@ -50,9 +50,8 @@ const MainLayout = () => {
                         const Icon = item.icon
                         const isActive = location.pathname === item.to
                         return (
-                            <Link key={item.to} to={item.to} className={cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all group relative", isActive
-                                ? item.highlight ? "bg-[#FFD700] text-[#001F4D]" : "bg-[#0055A4] text-white" : "text-white hover:bg-[#002F6C]", collapsed && "justify-center px-0")} >
-                                <Icon className={cn("w-5 h-5 flex-shrink-0", item.highlight && isActive ? "text-[#001F4D]" : "text-white")} />
+                            <Link key={item.to} to={item.to} className={cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all group relative", isActive ? "bg-[#0055A4] text-white" : "text-white hover:bg-[#002F6C]", collapsed && "justify-center px-0")} >
+                                <Icon className="w-5 h-5 shrink-0 text-white" />
                                 {!collapsed && (
                                     <span className="font-medium text-white">
                                         {item.label}

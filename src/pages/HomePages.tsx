@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Handshake, Trophy, Users } from "lucide-react";
+import { Calendar, Handshake, Trophy, Users, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { useAthletes } from "@/features/athlete/athlete.hook";
 import { useTeams } from "@/features/team/team.hooks";
 import { useTournaments } from "@/features/tournament/tournament.hooks";
@@ -19,6 +20,29 @@ const HomePage = () => {
 
   const lastChampion = halls?.at(-1);
   const [isPlaying, setIsPlaying] = useState(!audio.paused);
+  const [darkMode, setDarkMode] = useState(() =>
+    document.documentElement.classList.contains('dark')
+  );
+
+  const toggleDarkMode = (checked: boolean) => {
+    const html = document.documentElement;
+    if (checked) {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+    setDarkMode(checked);
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      document.documentElement.classList.add('dark');
+      setDarkMode(true);
+    }
+  }, []);
 
   // Sincronizza stato se audio viene controllato altrove
   useEffect(() => {
@@ -49,6 +73,16 @@ const HomePage = () => {
   return (
     <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 overflow-x-hidden">
       <div className="max-w-6xl mx-auto">
+
+        {/* DARK MODE TOGGLE */}
+        <div className="flex justify-end items-center gap-3 mb-4">
+          <Sun className={`w-5 h-5 transition-colors ${!darkMode ? 'text-[#FFD700]' : 'text-white/40'}`} />
+          <Switch
+            checked={darkMode}
+            onCheckedChange={toggleDarkMode}
+          />
+          <Moon className={`w-5 h-5 transition-colors ${darkMode ? 'text-[#FFD700]' : 'text-white/40'}`} />
+        </div>
 
         {/* HERO */}
         <section className="bg-[#002F6C] rounded-2xl p-6 sm:p-8 lg:p-12 mb-8 border-2 border-[#FFD700]/30 shadow-2xl">
