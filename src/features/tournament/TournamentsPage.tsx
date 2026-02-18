@@ -15,7 +15,7 @@ const TournamentsPage = () => {
   const filteredTournaments =
     tournaments?.filter((tournament) =>
       tournament.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+    ).sort((a, b) => b.id - a.id) || [];
 
   const handleDelete = async (id: number, name: string) => {
     if (window.confirm(`Sei sicuro di voler eliminare il torneo "${name}"?`)) {

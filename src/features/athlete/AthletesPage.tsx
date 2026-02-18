@@ -69,7 +69,7 @@ const AthletesPage = () => {
     `${athlete.first_name} ${athlete.last_name} ${athlete.fiscal_code}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
-  ) || [];
+  ).sort((a, b) => (b.tournaments_won ?? 0) - (a.tournaments_won ?? 0) || b.id - a.id) || [];
 
   const handleDelete = async (e: React.MouseEvent, id: number, name: string) => {
     e.stopPropagation();
