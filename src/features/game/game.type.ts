@@ -1,3 +1,10 @@
+export type GameScorer = {
+    athlete_id: number;
+    athlete_name: string;
+    goals: number;
+    team_fk: number;
+};
+
 export type Game = {
     id:number;
     tournament_fk: number;
@@ -12,4 +19,5 @@ export type Game = {
     completed: boolean;
     created_at: string;
     updated_at: string;
+    scorers?: GameScorer[];
 }

@@ -12,6 +12,7 @@ export const athleteSchema = z.object({
   birth_date: z.string().optional().nullable(),
   img: z.string().optional().nullable(),
   tournaments_won: z.number(),
+  goals: z.number(),
   created_at: z.string(),
   updated_at: z.string(),
 });

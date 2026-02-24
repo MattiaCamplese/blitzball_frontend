@@ -13,9 +13,16 @@ export type TournamentCreate = Omit<Tournament, 'id' | 'created_at' | 'updated_a
   is_active?: boolean;
 };
 
+export type ScorerInput = {
+  athlete_fk: number;
+  team_fk: number;
+  goals: number;
+};
+
 export type GameUpdate = {
   home_score: number;
   away_score: number;
+  scorers?: ScorerInput[];
 };
 
 export type BracketGenerate = {

@@ -10,26 +10,18 @@ import BracketConnector from './BracketConnector';
 
 interface BracketGridProps {
   bracketLayout: BracketColumn[];
-  localScores: Record<number, { home: number; away: number }>;
-  savingGames: Set<number>;
   winnerId?: number;
   getTeamName: (teamId?: number) => string;
   getTeamLogo: (teamId?: number) => string | undefined;
-  onScoreChange: (gameId: number, isHome: boolean, value: string) => void;
-  onSaveScore: (game: Game) => void;
-  hasScoresChanged: (gameId: number, game: Game) => boolean;
+  onOpenResult: (game: Game) => void;
 }
 
 const BracketGrid = ({
   bracketLayout,
-  localScores,
-  savingGames,
   winnerId,
   getTeamName,
   getTeamLogo,
-  onScoreChange,
-  onSaveScore,
-  hasScoresChanged,
+  onOpenResult,
 }: BracketGridProps) => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -84,13 +76,7 @@ const BracketGrid = ({
                       game={gameData.game}
                       getTeamName={getTeamName}
                       getTeamLogo={getTeamLogo}
-                      localScores={localScores[gameData.game.id]}
-                      onScoreChange={(isHome, value) =>
-                        onScoreChange(gameData.game.id, isHome, value)
-                      }
-                      onSave={() => onSaveScore(gameData.game)}
-                      isSaving={savingGames.has(gameData.game.id)}
-                      hasChanges={hasScoresChanged(gameData.game.id, gameData.game)}
+                      onOpenResult={() => onOpenResult(gameData.game)}
                       isFinal={column.isFinal}
                       winnerId={winnerId}
                     />

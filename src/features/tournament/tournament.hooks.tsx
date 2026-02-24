@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BracketService, TournamentService } from './tournament.services';
-import type { BracketGenerate, GameUpdate, TournamentCreate } from './tournament.type';
+import type { BracketGenerate, GameUpdate, ScorerInput, TournamentCreate } from './tournament.type';
 
 
 // Hooks per Tournament
@@ -109,9 +109,28 @@ export const useUpdateGameResult = () => {
       queryClient.invalidateQueries({ 
         queryKey: ['tournaments', variables.tournamentId] 
       });
-      queryClient.invalidateQueries({ 
-        queryKey: ['teams'] 
+      queryClient.invalidateQueries({
+        queryKey: ['teams']
       });
+      queryClient.invalidateQueries({
+        queryKey: ['athletes']
+      });
+    },
+  });
+};
+
+export const useUpdateScorers = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ gameId, scorers, tournamentId }: {
+      gameId: number;
+      scorers: ScorerInput[];
+      tournamentId: number;
+    }) => BracketService.updateScorers(gameId, scorers),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['bracket', variables.tournamentId] });
+      queryClient.invalidateQueries({ queryKey: ['athletes'] });
     },
   });
 };

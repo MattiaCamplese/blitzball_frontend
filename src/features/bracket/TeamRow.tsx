@@ -7,8 +7,6 @@ export interface TeamRowProps {
   score?: number;
   isWinner: boolean;
   isChampion: boolean;
-  canEdit: boolean;
-  onScoreChange: (value: string) => void;
   isFinal?: boolean;
 }
 
@@ -19,8 +17,6 @@ const TeamRow = ({
   score,
   isWinner,
   isChampion,
-  canEdit,
-  onScoreChange,
   isFinal = false,
 }: TeamRowProps) => {
   return (
@@ -74,25 +70,13 @@ const TeamRow = ({
       </div>
 
       <div className="flex-shrink-0">
-        {canEdit ? (
-          <input
-            type="number"
-            value={score ?? 0}
-            onChange={(e) => onScoreChange(e.target.value)}
-            className={`bg-slate-900/80 text-white rounded-md text-center font-bold border-2 border-amber-400/50 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
-              isFinal ? 'w-16 px-2 py-2 text-sm' : 'w-12 px-1.5 py-1 text-xs'
-            }`}
-            min="0"
-          />
-        ) : (
-          <span
-            className={`font-black inline-block text-center ${
-              isWinner ? 'text-amber-400' : 'text-gray-400'
-            } ${isFinal ? 'text-xl min-w-[2.5rem]' : 'text-base min-w-[1.5rem]'}`}
-          >
-            {score ?? '-'}
-          </span>
-        )}
+        <span
+          className={`font-black inline-block text-center ${
+            isWinner ? 'text-amber-400' : 'text-gray-400'
+          } ${isFinal ? 'text-xl min-w-10' : 'text-base min-w-6'}`}
+        >
+          {score ?? '-'}
+        </span>
       </div>
     </div>
   );

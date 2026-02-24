@@ -210,6 +210,13 @@ const AthletesPage = () => {
                     {athlete.tournaments_won === 1 ? 'torneo vinto' : 'tornei vinti'}
                   </span>
                 </div>
+                <div className="flex items-center gap-2 text-blue-300 text-sm">
+                  <span>⚽</span>
+                  <span className="font-medium">
+                    {athlete.goals ?? 0}{' '}
+                    {athlete.goals === 1 ? 'gol segnato' : 'gol segnati'}
+                  </span>
+                </div>
               </div>
 
               <p className="text-xs text-gray-600 group-hover:text-gray-400 transition-colors mt-3 text-right">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCreateAthlete, useAthletes } from "./athlete.hook";
-import { Loader2, PlusIcon, User, Hash, MapPin, Calendar, Trophy, ImageIcon } from "lucide-react";
+import { Loader2, PlusIcon, User, Hash, MapPin, Calendar, ImageIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -17,7 +17,6 @@ const CreateAthleteButton = () => {
     birth_place: "",
     birth_date: "",
     img: "",
-    tournaments_won: 0,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -57,7 +56,6 @@ const CreateAthleteButton = () => {
           birth_place: "",
           birth_date: "",
           img: "",
-          tournaments_won: 0,
         });
         setErrors({});
       },
@@ -189,21 +187,6 @@ const CreateAthleteButton = () => {
             </InputGroup>
           </div>
           
-          {/* Tornei Vinti */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tornei Vinti
-            </label>
-            <InputGroup>
-              <InputGroupInput type="number" name="tournaments_won" value={formData.tournaments_won} onChange={handleChange} placeholder="0" min="0" />
-              <InputGroupAddon>
-                <Trophy className="h-4 w-4" />
-              </InputGroupAddon>
-            </InputGroup>
-          </div>
-
-
-
           {/* Footer Buttons */}
           <div className="flex gap-3 pt-4 border-t">
             <Button type="button" variant="secondary" onClick={() => setOpen(false)} className="flex-1">

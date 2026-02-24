@@ -1,7 +1,7 @@
 import myEnv from '@/lib/env';
 import { myFetch } from '@/lib/beckend';
-import type { BracketGenerate, GameUpdate, Tournament, TournamentCreate } from './tournament.type';
-import type { Game } from '../game/game.type';
+import type { BracketGenerate, GameUpdate, ScorerInput, Tournament, TournamentCreate } from './tournament.type';
+import type { Game, GameScorer } from '../game/game.type';
 
 
 
@@ -92,8 +92,8 @@ export const BracketService = {
   },
 
   // Aggiorna il risultato di una partita
-  updateGame: async (gameId: number, scores: GameUpdate): Promise<{ winner_team_id: number }> => {
-    const data = await myFetch<{ winner_team_id: number }>(
+  updateGame: async (gameId: number, scores: GameUpdate): Promise<{ winner_team_id: number; scorers: GameScorer[] }> => {
+    const data = await myFetch<{ winner_team_id: number; scorers: GameScorer[] }>(
       `${myEnv.backEndApiUrl}/brackets_generator/${gameId}`,
       {
         method: 'PATCH',
@@ -101,6 +101,21 @@ export const BracketService = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(scores),
+      }
+    );
+    return data;
+  },
+
+  // Aggiorna solo i marcatori di una partita già completata
+  updateScorers: async (gameId: number, scorers: ScorerInput[]): Promise<{ scorers: GameScorer[] }> => {
+    const data = await myFetch<{ scorers: GameScorer[] }>(
+      `${myEnv.backEndApiUrl}/brackets_generator/${gameId}/scorers`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ scorers }),
       }
     );
     return data;
