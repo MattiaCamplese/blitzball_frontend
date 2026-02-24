@@ -8,11 +8,18 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        // — GERARCHIA UI —
+        // Primario: sfondo giallo pieno, testo scuro
+        primary: "bg-[#FFD700] text-[#001F4D] font-semibold hover:bg-[#e6c000] border-transparent",
+        // Secondario: giallo al 40% di opacità
+        secondary: "bg-[#FFD700]/40 text-[#001F4D] hover:bg-[#FFD700]/55 border-transparent",
+        // Terziario: trasparente con solo contorno giallo
+        tertiary: "bg-transparent border border-[#FFD700] text-[#FFD700] hover:bg-[#FFD700]/10",
+        // — VARIANTI BASE —
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
         outline: "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-        destructive: "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
+        destructive: "bg-red-500/40 hover:bg-red-500/70 text-red-300 border-red-500/30",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -27,7 +34,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
       size: "default",
     },
   }
@@ -35,7 +42,7 @@ const buttonVariants = cva(
 
 function Button({
   className,
-  variant = "default",
+  variant = "primary",
   size = "default",
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {

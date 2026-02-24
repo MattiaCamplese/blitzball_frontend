@@ -41,7 +41,7 @@ const BracketGrid = ({
         <p className="text-gray-300 text-lg mb-4">
           Nessuna partita disponibile per questo torneo
         </p>
-        <Button variant="link" onClick={() => navigate('/tournaments')} className="text-amber-400 hover:text-amber-300 transition-colors underline" >
+        <Button variant="tertiary" onClick={() => navigate('/tournaments')} className="mt-2">
           Torna ai tornei
         </Button>
       </div>

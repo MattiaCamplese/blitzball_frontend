@@ -180,11 +180,11 @@ const AthletesPage = () => {
                   </div>
                 </div>
                 <div className="flex gap-1 ml-2">
-                  <Button variant="destructive" size="icon" onClick={(e) => openEdit(e, athlete)} className="p-2 bg-[#0055A4]/50 rounded-lg hover:bg-[#0055A4] transition-colors">
-                    <Pencil className="w-4 h-4 text-black" />
+                  <Button variant="tertiary" size="icon" onClick={(e) => openEdit(e, athlete)}>
+                    <Pencil className="w-4 h-4" />
                   </Button>
-                  <Button variant="destructive" size="icon" onClick={(e) => handleDelete(e, athlete.id, `${athlete.first_name} ${athlete.last_name}`)} disabled={deleteAthlete.isPending} className="p-2 bg-red-900/50 rounded-lg hover:bg-red-900 transition-colors">
-                    <Trash2 className="w-4 h-4 text-black" />
+                  <Button variant="destructive" size="icon" onClick={(e) => handleDelete(e, athlete.id, `${athlete.first_name} ${athlete.last_name}`)} disabled={deleteAthlete.isPending}>
+                    <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
@@ -291,10 +291,10 @@ const AthletesPage = () => {
             </div>
 
             <div className="flex gap-3 pt-4 border-t">
-              <Button type="button" onClick={() => setEditOpen(false)} className="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300">
+              <Button type="button" variant="secondary" onClick={() => setEditOpen(false)} className="flex-1">
                 Annulla
               </Button>
-              <Button type="submit" disabled={updateAthlete.isPending} className="flex-1 flex items-center justify-center gap-2 text-gray-700">
+              <Button type="submit" variant="primary" disabled={updateAthlete.isPending} className="flex-1 flex items-center justify-center gap-2">
                 {updateAthlete.isPending ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />

@@ -110,7 +110,7 @@ const BracketPage = () => {
         <div className="text-center">
           <Trophy className="w-20 h-20 text-gray-700 mx-auto mb-4" />
           <div className="text-white text-xl mb-2">Torneo non trovato</div>
-          <Button variant="link" onClick={() => navigate('/tournaments')} className="text-amber-400 hover:text-amber-300 transition-colors underline" >
+          <Button variant="tertiary" onClick={() => navigate('/tournaments')} className="mt-2">
             Torna ai tornei
           </Button>
         </div>

@@ -84,7 +84,7 @@ const CreateAthleteButton = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button className="flex items-center gap-2 text-grey-700">
+        <Button variant="primary" className="flex items-center gap-2">
           <PlusIcon className="h-4 w-4" />
           <span>Nuovo Atleta</span>
         </Button>
@@ -206,10 +206,10 @@ const CreateAthleteButton = () => {
 
           {/* Footer Buttons */}
           <div className="flex gap-3 pt-4 border-t">
-            <Button type="button" onClick={() => setOpen(false)} className="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300" >
+            <Button type="button" variant="secondary" onClick={() => setOpen(false)} className="flex-1">
               Annulla
             </Button>
-            <Button type="submit" disabled={isPending} className="flex-1 flex items-center justify-center gap-2 text-gray-700" >
+            <Button type="submit" variant="primary" disabled={isPending} className="flex-1 flex items-center justify-center gap-2">
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />

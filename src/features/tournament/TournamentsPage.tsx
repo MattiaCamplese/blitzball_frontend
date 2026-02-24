@@ -165,8 +165,9 @@ const TournamentsPage = () => {
 
               {/* BUTTON */}
               <Button
+                variant="primary"
                 onClick={() => handleViewBracket(tournament.id)}
-                className="w-full bg-[#0055A4] hover:bg-[#FFD700] text-black hover:text-black py-2 rounded-lg transition-colors font-medium" >
+                className="w-full py-2">
                 Visualizza Bracket
               </Button>
             </div>

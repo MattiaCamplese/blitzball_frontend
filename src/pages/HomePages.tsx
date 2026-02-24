@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Handshake, Trophy, Users, Sun, Moon } from "lucide-react";
+import { Calendar, Handshake, Trophy, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { useAthletes } from "@/features/athlete/athlete.hook";
 import { useTeams } from "@/features/team/team.hooks";
 import { useTournaments } from "@/features/tournament/tournament.hooks";
@@ -20,29 +19,6 @@ const HomePage = () => {
 
   const lastChampion = halls?.at(-1);
   const [isPlaying, setIsPlaying] = useState(!audio.paused);
-  const [darkMode, setDarkMode] = useState(() =>
-    document.documentElement.classList.contains('dark')
-  );
-
-  const toggleDarkMode = (checked: boolean) => {
-    const html = document.documentElement;
-    if (checked) {
-      html.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      html.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-    setDarkMode(checked);
-  };
-
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
-      document.documentElement.classList.add('dark');
-      setDarkMode(true);
-    }
-  }, []);
 
   // Sincronizza stato se audio viene controllato altrove
   useEffect(() => {
@@ -74,16 +50,6 @@ const HomePage = () => {
     <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 overflow-x-hidden">
       <div className="max-w-6xl mx-auto">
 
-        {/* DARK MODE TOGGLE */}
-        <div className="flex justify-end items-center gap-3 mb-4">
-          <Sun className={`w-5 h-5 transition-colors ${!darkMode ? 'text-[#FFD700]' : 'text-white/40'}`} />
-          <Switch
-            checked={darkMode}
-            onCheckedChange={toggleDarkMode}
-          />
-          <Moon className={`w-5 h-5 transition-colors ${darkMode ? 'text-[#FFD700]' : 'text-white/40'}`} />
-        </div>
-
         {/* HERO */}
         <section className="bg-[#002F6C] rounded-2xl p-6 sm:p-8 lg:p-12 mb-8 border-2 border-[#FFD700]/30 shadow-2xl">
           <div className="flex items-center justify-between gap-6">
@@ -100,13 +66,13 @@ const HomePage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/tournaments">
-                  <Button className="bg-[#0055A4] hover:bg-[#0066CC] text-black flex items-center gap-2 px-4 py-2 rounded">
+                  <Button variant="primary" className="flex items-center gap-2 px-4 py-2">
                     <Calendar className="w-5 h-5" /> New Tournament
                   </Button>
                 </Link>
                 <Link to="/halls_of_fame">
-                  <Button variant="outline" className="border border-black flex items-center gap-2 px-4 py-2 rounded text-black">
-                    <Trophy className="w-5 h-5 text-black" /> Hall of Fame
+                  <Button variant="tertiary" className="flex items-center gap-2 px-4 py-2">
+                    <Trophy className="w-5 h-5" /> Hall of Fame
                   </Button>
                 </Link>
               </div>

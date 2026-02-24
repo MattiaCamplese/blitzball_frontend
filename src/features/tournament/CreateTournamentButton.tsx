@@ -118,7 +118,7 @@ const CreateTournamentButton = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button className="flex items-center gap-2 text-black-700">
+        <Button variant="primary" className="flex items-center gap-2">
           <PlusIcon className="h-4 w-4" />
           <span>Nuovo Torneo</span>
         </Button>
@@ -270,7 +270,7 @@ const CreateTournamentButton = () => {
                 type="button"
                 variant="secondary"
                 onClick={handleBack}
-                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                className="flex-1 px-4 py-2"
               >
                 Indietro
               </Button>
@@ -282,15 +282,16 @@ const CreateTournamentButton = () => {
                   type="button"
                   variant="secondary"
                   onClick={() => setOpen(false)}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                  className="flex-1 px-4 py-2"
                 >
                   Annulla
                 </Button>
                 <Button
                   type="button"
+                  variant="primary"
                   onClick={handleNext}
                   disabled={!formData.name || !formData.start_date}
-                  className="flex-1 px-4 py-2 bg-[#0055A4] text-gray-700 rounded-lg hover:bg-[#003d7a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex-1 px-4 py-2"
                 >
                   Avanti
                 </Button>
@@ -298,12 +299,13 @@ const CreateTournamentButton = () => {
             ) : (
               <Button
                 type="submit"
+                variant="primary"
                 disabled={
                   isCreating ||
                   isGenerating ||
                   selectedTeamIds.length !== formData.number_of_teams
                 }
-                className="flex-1 px-4 py-2 bg-[#0055A4] text-gray-700 rounded-lg hover:bg-[#003d7a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2 flex items-center justify-center gap-2"
               >
                 {isCreating || isGenerating ? (
                   <>

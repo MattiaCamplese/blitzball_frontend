@@ -20,7 +20,7 @@ const BracketHeader = ({ tournament, final, gamesCount, getTeamName }: BracketHe
 
   return (
     <div className="px-4 lg:px-8 mb-8">
-      <Button variant="ghost" onClick={() => navigate('/tournaments')} className="flex items-center gap-2 text-black hover:text-gray-600 mb-6 transition-colors group" >
+      <Button variant="tertiary" onClick={() => navigate('/tournaments')} className="flex items-center gap-2 mb-6 group">
         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
         <span>Torna ai tornei</span>
       </Button>

@@ -114,14 +114,14 @@ const AthleteDetailModalSimple = ({ athlete, open, onOpenChange }: AthleteDetail
                     {/* Header con bottone Aggiungi */}
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border-b pb-3">
                         <h3 className="text-sm font-semibold text-gray-700">Composizioni Squadre</h3>
-                        <Button onClick={() => setShowForm(v => !v)} disabled={activeComps.length > 0 && !showForm} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:opacity-50" >
+                        <Button variant="primary" onClick={() => setShowForm(v => !v)} disabled={activeComps.length > 0 && !showForm} className="w-full sm:w-auto">
                             {showForm ? (
-                                <span className="flex items-center justify-center gap-2 text-sm text-black">
+                                <span className="flex items-center justify-center gap-2 text-sm">
                                     <X className="h-4 w-4" />
                                     Chiudi
                                 </span>
                             ) : (
-                                <span className="flex items-center justify-center gap-2 text-sm text-black">
+                                <span className="flex items-center justify-center gap-2 text-sm">
                                     <Plus className="h-4 w-4" />
                                     <span className="hidden sm:inline">Aggiungi Squadra</span>
                                     <span className="sm:hidden">Aggiungi</span>
@@ -220,10 +220,10 @@ const AthleteDetailModalSimple = ({ athlete, open, onOpenChange }: AthleteDetail
 
                             {/* Bottoni form */}
                             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
-                                <Button type="button" onClick={() => { reset(); setShowForm(false); }} className="w-full sm:flex-1 bg-gray-200 hover:bg-gray-300" >
-                                    <span className="text-gray-700 font-medium">Annulla</span>
+                                <Button type="button" variant="secondary" onClick={() => { reset(); setShowForm(false); }} className="w-full sm:flex-1">
+                                    <span className="font-medium">Annulla</span>
                                 </Button>
-                                <Button type="submit" disabled={isPending} className="w-full sm:flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50" >
+                                <Button type="submit" variant="primary" disabled={isPending} className="w-full sm:flex-1">
                                     {createComposition.isPending ? (
                                         <span className="flex items-center justify-center gap-2 text-white">
                                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -279,8 +279,8 @@ const AthleteDetailModalSimple = ({ athlete, open, onOpenChange }: AthleteDetail
                                                 )}
                                             </div>
                                         </div>
-                                        <Button onClick={() => handleTerminate(c.id)} disabled={isPending} className="bg-orange-500 hover:bg-orange-600 disabled:opacity-50 w-full sm:w-auto shrink-0" >
-                                            <span className="flex items-center justify-center gap-1 text-black text-xs font-medium">
+                                        <Button variant="destructive" onClick={() => handleTerminate(c.id)} disabled={isPending} className="w-full sm:w-auto shrink-0">
+                                            <span className="flex items-center justify-center gap-1 text-xs font-medium">
                                                 <StopCircle className="h-3 w-3" />
                                                 Termina
                                             </span>
@@ -307,8 +307,8 @@ const AthleteDetailModalSimple = ({ athlete, open, onOpenChange }: AthleteDetail
                                                 <span className="truncate">{fmt(c.start_date)} → {c.end_date && fmt(c.end_date)}</span>
                                             </div>
                                         </div>
-                                        <Button onClick={() => handleDelete(c.id)} disabled={isPending} className="bg-red-100 hover:bg-red-200 disabled:opacity-50 w-full sm:w-auto shrink-0" >
-                                            <span className="flex items-center justify-center gap-1 text-black text-xs font-medium">
+                                        <Button variant="destructive" onClick={() => handleDelete(c.id)} disabled={isPending} className="w-full sm:w-auto shrink-0">
+                                            <span className="flex items-center justify-center gap-1 text-xs font-medium">
                                                 <Trash2 className="h-3 w-3" />
                                                 Elimina
                                             </span>
