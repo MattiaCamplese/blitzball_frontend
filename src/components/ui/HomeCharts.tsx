@@ -83,7 +83,7 @@ const HomeCharts = ({ athletes, teams }: HomeChartsProps) => {
               <XAxis
                 type="number"
                 allowDecimals={false}
-                tick={{ fill: '#9ca3af', fontSize: 11 }}
+                tick={{ fill: '#9ca3af', fontSize: 11, fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif' }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -91,7 +91,7 @@ const HomeCharts = ({ athletes, teams }: HomeChartsProps) => {
                 dataKey="name"
                 type="category"
                 width={110}
-                tick={{ fill: '#e5e7eb', fontSize: 11 }}
+                tick={{ fill: '#e5e7eb', fontSize: 12, fontWeight: 500, fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif' }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -124,7 +124,7 @@ const HomeCharts = ({ athletes, teams }: HomeChartsProps) => {
               <XAxis
                 type="number"
                 allowDecimals={false}
-                tick={{ fill: '#9ca3af', fontSize: 11 }}
+                tick={{ fill: '#9ca3af', fontSize: 11, fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif' }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -132,7 +132,7 @@ const HomeCharts = ({ athletes, teams }: HomeChartsProps) => {
                 dataKey="name"
                 type="category"
                 width={110}
-                tick={{ fill: '#e5e7eb', fontSize: 11 }}
+                tick={{ fill: '#e5e7eb', fontSize: 12, fontWeight: 500, fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif' }}
                 axisLine={false}
                 tickLine={false}
               />
