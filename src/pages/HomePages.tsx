@@ -9,6 +9,7 @@ import { useTournaments } from "@/features/tournament/tournament.hooks";
 import { useHallOfFame } from "@/features/hall_of_fame/hall_of_fame.hook";
 import StatCard from "@/components/ui/statCard";
 import AnimatedTitle from "@/components/ui/title";
+import HomeCharts from "@/components/ui/HomeCharts";
 import audio from "@/audio/globalAudio";
 
 const HomePage = () => {
@@ -99,6 +100,9 @@ const HomePage = () => {
           <StatCard to="/athletes" icon={<Users />} label="Athletes" value={athletes?.length} />
           <StatCard to="/halls_of_fame" icon={<Trophy />} label="Champions" value={halls?.length} />
         </section>
+
+        {/* CHARTS */}
+        <HomeCharts athletes={athletes} teams={teams} />
 
         {/* LAST CHAMPION */}
         <section className="bg-[#001a3d] rounded-xl p-4 sm:p-6 border border-gray-700">

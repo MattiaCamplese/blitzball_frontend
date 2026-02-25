@@ -167,7 +167,7 @@ const TournamentsPage = () => {
 
               {/* BUTTON */}
               <Button
-                variant="primary"
+                variant="secondary"
                 onClick={() => handleViewBracket(tournament.id)}
                 className="w-full py-2">
                 Visualizza Bracket
@@ -183,7 +183,7 @@ const TournamentsPage = () => {
             <p className="text-gray-400 text-lg">
               {searchTerm
                 ? 'Nessun torneo trovato con questi criteri'
-                : 'Nessun torneo registrato'}
+                : 'Nessun torneo attivo'}
             </p>
           </div>
         )}

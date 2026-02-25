@@ -1,4 +1,4 @@
-import { Sparkles, Trophy } from 'lucide-react';
+import { Sparkles, Trophy, Goal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Game } from '../game/game.type';
 import TeamRow from './TeamRow';
@@ -103,14 +103,14 @@ const MatchCard = ({
         <div className={`mt-2 space-y-0.5 border-t border-slate-600/50 pt-1.5 ${isFinal ? 'text-xs' : 'text-[10px]'} text-gray-400`}>
           {homeScorers.map(s => (
             <div key={s.athlete_id} className="flex items-center gap-1">
-              <span>⚽</span>
+              <Goal className="w-3 h-3 shrink-0" />
               <span className="truncate">{s.athlete_name} ({s.goals})</span>
             </div>
           ))}
           {awayScorers.map(s => (
             <div key={s.athlete_id} className="flex items-center gap-1 justify-end">
               <span className="truncate">{s.athlete_name} ({s.goals})</span>
-              <span>⚽</span>
+              <Goal className="w-3 h-3 shrink-0" />
             </div>
           ))}
         </div>

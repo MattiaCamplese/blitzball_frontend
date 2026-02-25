@@ -1,4 +1,4 @@
-import { Search, Trash2, Trophy, Users, Pencil, Loader2, ImageIcon, MapPin, Calendar, PencilLine } from 'lucide-react';
+import { Search, Trash2, Trophy, Users, Pencil, Loader2, ImageIcon, MapPin, Calendar, PencilLine, Goal } from 'lucide-react';
 import { useState } from 'react';
 import { useAthletes, useDeleteAthlete, useUpdateAthlete } from './athlete.hook';
 import type { Athlete } from './athlete.services';
@@ -211,7 +211,7 @@ const AthletesPage = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-blue-300 text-sm">
-                  <span>⚽</span>
+                  <Goal className="w-4 h-4 shrink-0" />
                   <span className="font-medium">
                     {athlete.goals ?? 0}{' '}
                     {athlete.goals === 1 ? 'gol segnato' : 'gol segnati'}

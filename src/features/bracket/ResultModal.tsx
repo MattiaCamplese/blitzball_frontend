@@ -173,9 +173,10 @@ const ResultModal = ({
             <div className="grid grid-cols-2 gap-4">
               {/* Home team */}
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 truncate">
-                  ⚽ {homeName}
-                </p>
+                <div className="flex items-center gap-1 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  <Goal className="w-3 h-3 shrink-0" />
+                  <span className="truncate">{homeName}</span>
+                </div>
                 {homeComps.length === 0 ? (
                   <p className="text-xs text-gray-400 italic">Nessun giocatore</p>
                 ) : (
@@ -201,9 +202,10 @@ const ResultModal = ({
 
               {/* Away team */}
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 truncate">
-                  ⚽ {awayName}
-                </p>
+                <div className="flex items-center gap-1 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  <Goal className="w-3 h-3 shrink-0" />
+                  <span className="truncate">{awayName}</span>
+                </div>
                 {awayComps.length === 0 ? (
                   <p className="text-xs text-gray-400 italic">Nessun giocatore</p>
                 ) : (

@@ -10,6 +10,7 @@ import TeamsPage from './features/team/TeamPage';
 import TournamentsPage from './features/tournament/TournamentsPage';
 import BracketPage from './features/bracket/BracketPage';
 import HallOfFamePage from './features/hall_of_fame/HallOfFamePage';
+import { NotFoundPage } from './components/ui/notFoundPage';
 
 
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path:"/halls_of_fame",
         element: <HallOfFamePage/>
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />
       }
     ]
   }
