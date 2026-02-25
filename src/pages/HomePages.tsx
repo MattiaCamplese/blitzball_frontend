@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Handshake, Trophy, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAthletes } from "@/features/athlete/athlete.hook";
 import { useTeams } from "@/features/team/team.hooks";
@@ -12,6 +12,7 @@ import AnimatedTitle from "@/components/ui/title";
 import audio from "@/audio/globalAudio";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const { data: athletes } = useAthletes();
   const { data: teams } = useTeams();
   const { data: tournaments } = useTournaments();
@@ -64,17 +65,13 @@ const HomePage = () => {
                 Manage tournaments, teams and athletes in one place.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/tournaments">
-                  <Button variant="primary" className="flex items-center gap-2 px-4 py-2">
-                    <Calendar className="w-5 h-5" /> New Tournament
-                  </Button>
-                </Link>
-                <Link to="/halls_of_fame">
-                  <Button variant="tertiary" className="flex items-center gap-2 px-4 py-2">
-                    <Trophy className="w-5 h-5" /> Hall of Fame
-                  </Button>
-                </Link>
+              <div className="flex flex-row flex-wrap gap-3">
+                <Button variant="primary" onClick={() => navigate('/tournaments', { state: { openCreate: true } })} className="flex items-center gap-2 px-4 py-2">
+                  <Calendar className="w-5 h-5" /> New Tournament
+                </Button>
+                <Button variant="tertiary" onClick={() => navigate('/halls_of_fame')} className="flex items-center gap-2 px-4 py-2 ring-2 ring-[#FFD700]">
+                  <Trophy className="w-5 h-5" /> Hall of Fame
+                </Button>
               </div>
             </div>
 

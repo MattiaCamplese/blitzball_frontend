@@ -30,14 +30,17 @@ const ResultModal = ({
   // goalInputs: { [athlete_fk]: goals }
   const [goalInputs, setGoalInputs] = useState<Record<number, number>>({});
 
-  const { data: homeComps = [], isLoading: loadingHome } = useCompositionsByTeam(
+  const { data: homeCompsRaw = [], isLoading: loadingHome } = useCompositionsByTeam(
     game?.home_team_fk ?? 0,
     { enabled: open && !!game?.home_team_fk }
   );
-  const { data: awayComps = [], isLoading: loadingAway } = useCompositionsByTeam(
+  const { data: awayCompsRaw = [], isLoading: loadingAway } = useCompositionsByTeam(
     game?.away_team_fk ?? 0,
     { enabled: open && !!game?.away_team_fk }
   );
+  // Only active players (end_date null) — prevents ex-players from appearing in old team's list
+  const homeComps = homeCompsRaw.filter(c => !c.end_date);
+  const awayComps = awayCompsRaw.filter(c => !c.end_date);
 
   // Precarica dati esistenti quando si apre in modalità "Modifica"
   useEffect(() => {
@@ -80,6 +83,19 @@ const ResultModal = ({
       return;
     }
     const scorers = buildScorers();
+
+    const homeGoalsTotal = scorers.filter(s => s.team_fk === game.home_team_fk).reduce((sum, s) => sum + s.goals, 0);
+    const awayGoalsTotal = scorers.filter(s => s.team_fk === game.away_team_fk).reduce((sum, s) => sum + s.goals, 0);
+    const hs = isEdit ? (game.home_score ?? 0) : homeScore;
+    const as_ = isEdit ? (game.away_score ?? 0) : awayScore;
+    if (homeGoalsTotal > hs) {
+      alert(`I gol dei marcatori del ${homeName} (${homeGoalsTotal}) superano il punteggio della squadra (${hs})`);
+      return;
+    }
+    if (awayGoalsTotal > as_) {
+      alert(`I gol dei marcatori del ${awayName} (${awayGoalsTotal}) superano il punteggio della squadra (${as_})`);
+      return;
+    }
     if (isEdit) {
       onSaveScorers(game.id, scorers);
     } else {

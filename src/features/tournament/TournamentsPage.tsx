@@ -2,7 +2,7 @@ import { Search, Trophy, Calendar, MapPin, Users, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTournaments, useDeleteTournament } from './tournament.hooks';
 import CreateTournamentButton from './CreateTournamentButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import AnimatedTitle from '@/components/ui/title';
@@ -11,6 +11,8 @@ const TournamentsPage = () => {
   const { data: tournaments, isLoading, error } = useTournaments();
   const deleteTournament = useDeleteTournament();
   const navigate = useNavigate();
+  const location = useLocation();
+  const openCreate = !!(location.state as { openCreate?: boolean })?.openCreate;
   const [searchTerm, setSearchTerm] = useState('');
   const [showActive, setShowActive] = useState(true);
 
@@ -71,7 +73,7 @@ const TournamentsPage = () => {
               </p>
             </div>
             <div className="flex-shrink-0">
-              <CreateTournamentButton />
+              <CreateTournamentButton initialOpen={openCreate} />
             </div>
           </div>
         </div>
@@ -135,8 +137,8 @@ const TournamentsPage = () => {
                 </div>
 
                 {/* DELETE */}
-                <Button variant="destructive" size="icon" onClick={() => handleDelete(tournament.id, tournament.name)} className="p-2 text-black-700 rounded-lg " disabled={deleteTournament.isPending} >
-                  <Trash2 className="w-4 h-4 text-black-700" />
+                <Button variant="destructive" size="icon" onClick={() => handleDelete(tournament.id, tournament.name)} disabled={deleteTournament.isPending}>
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
 

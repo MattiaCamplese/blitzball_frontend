@@ -7,8 +7,8 @@ import { useCreateTournament, useGenerateBracket } from './tournament.hooks';
 import { useTeams } from '../team/team.hooks';
 import type { BracketGenerate } from './tournament.type';
 
-const CreateTournamentButton = () => {
-  const [open, setOpen] = useState(false);
+const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean }) => {
+  const [open, setOpen] = useState(initialOpen);
   const [step, setStep] = useState<'info' | 'teams'>('info');
   const { mutate: createTournament, isPending: isCreating } = useCreateTournament();
   const { mutate: generateBracket, isPending: isGenerating } = useGenerateBracket();
