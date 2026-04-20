@@ -1,4 +1,4 @@
-import { Search, Trash2, Trophy, Users, Pencil, Loader2, ImageIcon, MapPin, Calendar, PencilLine, Goal } from 'lucide-react';
+import { Search, Trash2, Trophy, Users, Pencil, Loader2, ImageIcon, MapPin, Calendar, Goal } from 'lucide-react';
 import { useState } from 'react';
 import { useAthletes, useDeleteAthlete, useUpdateAthlete } from './athlete.hook';
 import type { Athlete } from './athlete.services';
