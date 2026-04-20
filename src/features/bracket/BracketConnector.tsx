@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Game } from '../game/game.type';
 import type { BracketColumn } from './bracket.utils';
 
