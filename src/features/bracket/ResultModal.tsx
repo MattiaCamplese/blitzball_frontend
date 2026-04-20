@@ -108,7 +108,7 @@ const ResultModal = ({
       onSaveResult(game.id, homeScore, awayScore, scorers);
     }
   };
-
+5
   const renderScorerRows = (teamFk: number, teamName: string) => {
     const rows = scorerRows
       .map((row, globalIndex) => ({ row, globalIndex }))
