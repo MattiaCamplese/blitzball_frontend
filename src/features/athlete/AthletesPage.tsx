@@ -69,7 +69,7 @@ const AthletesPage = () => {
     `${athlete.first_name} ${athlete.last_name} ${athlete.fiscal_code}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
-  ).sort((a, b) => `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`, 'it')) || [];
+  ).sort((a, b) => `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)) || [];
 
   const handleDelete = async (e: React.MouseEvent, id: number, name: string) => {
     e.stopPropagation();
