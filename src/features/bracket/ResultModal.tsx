@@ -109,9 +109,6 @@ const ResultModal = ({
     }
   };
 
-  const homeScorers = scorerRows.filter(r => r.team_fk === game.home_team_fk);
-  const awayScorers = scorerRows.filter(r => r.team_fk === game.away_team_fk);
-
   const renderScorerRows = (teamFk: number, teamName: string) => {
     const rows = scorerRows
       .map((row, globalIndex) => ({ row, globalIndex }))
