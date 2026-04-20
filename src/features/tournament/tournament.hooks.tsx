@@ -93,7 +93,7 @@ export const useUpdateGameResult = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ gameId, scores, tournamentId }: { 
+    mutationFn: ({ gameId, scores}: { 
       gameId: number; 
       scores: GameUpdate;
       tournamentId: number;
@@ -123,7 +123,7 @@ export const useUpdateScorers = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ gameId, scorers, tournamentId }: {
+    mutationFn: ({ gameId, scorers}: {
       gameId: number;
       scorers: ScorerInput[];
       tournamentId: number;
