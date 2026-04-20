@@ -1,33 +1,58 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui/dialog';
-import { InputGroup, InputGroupAddon, InputGroupInput,} from '@/components/ui/input-group';
-import { Button } from '@/components/ui/button';
-import { Loader2, PlusIcon, Trophy, Calendar, MapPin, Users } from 'lucide-react';
-import { useState } from 'react';
-import { useCreateTournament, useGenerateBracket } from './tournament.hooks';
-import { useTeams } from '../team/team.hooks';
-import type { BracketGenerate } from './tournament.type';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Button } from "@/components/ui/button";
+import {
+  Loader2,
+  PlusIcon,
+  Trophy,
+  Calendar,
+  MapPin,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+import { useCreateTournament, useGenerateBracket } from "./tournament.hooks";
+import { useTeams } from "../team/team.hooks";
+import type { BracketGenerate } from "./tournament.type";
 
-const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean }) => {
+const CreateTournamentButton = ({
+  initialOpen = false,
+}: {
+  initialOpen?: boolean;
+}) => {
   const [open, setOpen] = useState(initialOpen);
-  const [step, setStep] = useState<'info' | 'teams'>('info');
-  const { mutate: createTournament, isPending: isCreating } = useCreateTournament();
-  const { mutate: generateBracket, isPending: isGenerating } = useGenerateBracket();
+  const [step, setStep] = useState<"info" | "teams">("info");
+  const { isPending: isCreating } = useCreateTournament();
+  const { mutate: generateBracket, isPending: isGenerating } =
+    useGenerateBracket();
   const { data: teams } = useTeams();
 
   const [formData, setFormData] = useState({
-    name: '',
-    start_date: new Date().toISOString().split('T')[0],
-    location: '',
+    name: "",
+    start_date: new Date().toISOString().split("T")[0],
+    location: "",
     number_of_teams: 4,
   });
 
   const [selectedTeamIds, setSelectedTeamIds] = useState<number[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'number' ? parseInt(value) || 0 : value,
+      [name]: type === "number" ? parseInt(value) || 0 : value,
     }));
   };
 
@@ -45,14 +70,14 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
   };
 
   const handleNext = () => {
-    if (step === 'info') {
-      setStep('teams');
+    if (step === "info") {
+      setStep("teams");
     }
   };
 
   const handleBack = () => {
-    if (step === 'teams') {
-      setStep('info');
+    if (step === "teams") {
+      setStep("info");
     }
   };
 
@@ -79,41 +104,48 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
       team_ids: selectedTeamIds,
     };
     // Aggiungi location solo se non è vuota
-    if (formData.location && formData.location.trim() !== '') {
+    if (formData.location && formData.location.trim() !== "") {
       payload.location = formData.location;
     }
 
-    console.log('Payload inviato al backend:', payload);
-    console.log('Numero di team richiesti:', formData.number_of_teams);
-    console.log('Numero di team selezionati:', selectedTeamIds.length);
+    console.log("Payload inviato al backend:", payload);
+    console.log("Numero di team richiesti:", formData.number_of_teams);
+    console.log("Numero di team selezionati:", selectedTeamIds.length);
 
     // Genera il bracket direttamente con i dati del torneo
     generateBracket(payload, {
       onSuccess: () => {
         setOpen(false);
-        setStep('info');
+        setStep("info");
         setFormData({
-          name: '',
-          start_date: new Date().toISOString().split('T')[0],
-          location: '',
+          name: "",
+          start_date: new Date().toISOString().split("T")[0],
+          location: "",
           number_of_teams: 4,
         });
         setSelectedTeamIds([]);
       },
       onError: (error: any) => {
-        console.error('Errore completo:', error);
-        const errorMessage = error?.response?.data?.message || error?.message || 'Errore sconosciuto';
+        console.error("Errore completo:", error);
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          "Errore sconosciuto";
         const errorDetails = error?.response?.data?.errors
           ? JSON.stringify(error.response.data.errors, null, 2)
-          : '';
+          : "";
 
-        alert(`Errore durante la creazione del torneo:\n${errorMessage}\n${errorDetails}`);
+        alert(
+          `Errore durante la creazione del torneo:\n${errorMessage}\n${errorDetails}`,
+        );
       },
     });
   };
 
-  const availableTeams = teams?.filter((team) => !selectedTeamIds.includes(team.id)) || [];
-  const selectedTeams = teams?.filter((team) => selectedTeamIds.includes(team.id)) || [];
+  const availableTeams =
+    teams?.filter((team) => !selectedTeamIds.includes(team.id)) || [];
+  const selectedTeams =
+    teams?.filter((team) => selectedTeamIds.includes(team.id)) || [];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -127,17 +159,17 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto text-gray-700">
         <DialogHeader className="text-gray-700 mb-2">
           <DialogTitle>
-            {step === 'info' ? 'Nuovo Torneo' : 'Seleziona Team'}
+            {step === "info" ? "Nuovo Torneo" : "Seleziona Team"}
           </DialogTitle>
           <DialogDescription>
-            {step === 'info'
-              ? 'Compila i campi per creare un nuovo torneo'
+            {step === "info"
+              ? "Compila i campi per creare un nuovo torneo"
               : `Seleziona ${formData.number_of_teams} team per il torneo`}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-          {step === 'info' && (
+          {step === "info" && (
             <>
               {/* Nome */}
               <div>
@@ -145,7 +177,14 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
                   Nome Torneo *
                 </label>
                 <InputGroup>
-                  <InputGroupInput type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Coppa Italia 2024" required />
+                  <InputGroupInput
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Coppa Italia 2024"
+                    required
+                  />
                   <InputGroupAddon>
                     <Trophy className="h-4 w-4" />
                   </InputGroupAddon>
@@ -199,19 +238,25 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
                   {[4, 8, 16, 32].map((num) => (
                     <label
                       key={num}
-                      className={`flex items-center justify-center p-3 rounded-lg cursor-pointer transition-colors ${formData.number_of_teams === num
-                        ? 'bg-[#0055A4] text-white border-2 border-[#0055A4]'
-                        : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-[#0055A4] hover:bg-gray-50'
-                        }`}
+                      className={`flex items-center justify-center p-3 rounded-lg cursor-pointer transition-colors ${
+                        formData.number_of_teams === num
+                          ? "bg-[#0055A4] text-white border-2 border-[#0055A4]"
+                          : "bg-white text-gray-700 border-2 border-gray-300 hover:border-[#0055A4] hover:bg-gray-50"
+                      }`}
                     >
-                      <input type="radio" name="number_of_teams" value={num} checked={formData.number_of_teams === num} onChange={(e) => {
-                        setFormData((prev) => ({
-                          ...prev,
-                          number_of_teams: num,
-                        }));
-                        // Reset team selection when changing number
-                        setSelectedTeamIds([]);
-                      }}
+                      <input
+                        type="radio"
+                        name="number_of_teams"
+                        value={num}
+                        checked={formData.number_of_teams === num}
+                        onChange={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            number_of_teams: num,
+                          }));
+                          // Reset team selection when changing number
+                          setSelectedTeamIds([]);
+                        }}
                         className="sr-only"
                       />
                       <span className="font-medium">{num} Team</span>
@@ -222,18 +267,31 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
             </>
           )}
 
-          {step === 'teams' && (
+          {step === "teams" && (
             <div className="space-y-4">
               {/* Selected Teams */}
               {selectedTeams.length > 0 && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-700 mb-2">
-                    Team Selezionati ({selectedTeams.length}/{formData.number_of_teams})
+                    Team Selezionati ({selectedTeams.length}/
+                    {formData.number_of_teams})
                   </h3>
                   <div className="grid grid-cols-2 gap-2 mb-4">
                     {selectedTeams.map((team) => (
-                      <div key={team.id} onClick={() => toggleTeamSelection(team.id)} className="flex items-center gap-2 p-3 bg-[#0055A4] text-white rounded-lg cursor-pointer hover:bg-[#003d7a]" >
-                        {team.logo ? (<img src={team.logo} alt={team.name} className="w-8 h-8 rounded-full object-cover" />) : (<Users className="w-8 h-8" />)}
+                      <div
+                        key={team.id}
+                        onClick={() => toggleTeamSelection(team.id)}
+                        className="flex items-center gap-2 p-3 bg-[#0055A4] text-white rounded-lg cursor-pointer hover:bg-[#003d7a]"
+                      >
+                        {team.logo ? (
+                          <img
+                            src={team.logo}
+                            alt={team.name}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                        ) : (
+                          <Users className="w-8 h-8" />
+                        )}
                         <span className="font-medium text-sm truncate">
                           {team.name}
                         </span>
@@ -248,11 +306,26 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
                 <h3 className="text-sm font-medium text-gray-700 mb-2">
                   Team Disponibili
                 </h3>
-                <div className="max-h-[300px] overflow-y-auto space-y-2">
+                <div className="max-h-75 overflow-y-auto space-y-2">
                   {availableTeams.map((team) => (
-                    <div key={team.id} onClick={() => toggleTeamSelection(team.id)} className={`flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-colors ${selectedTeamIds.length >= formData.number_of_teams
-                      ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}`}>
-                      {team.logo ? (<img src={team.logo} alt={team.name} className="w-8 h-8 rounded-full object-cover" />) : (<Users className="w-8 h-8" />)}
+                    <div
+                      key={team.id}
+                      onClick={() => toggleTeamSelection(team.id)}
+                      className={`flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-colors ${
+                        selectedTeamIds.length >= formData.number_of_teams
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:bg-gray-100"
+                      }`}
+                    >
+                      {team.logo ? (
+                        <img
+                          src={team.logo}
+                          alt={team.name}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <Users className="w-8 h-8" />
+                      )}
                       <span className="font-medium text-sm truncate">
                         {team.name}
                       </span>
@@ -265,7 +338,7 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
 
           {/* Footer Buttons */}
           <div className="flex gap-2 mt-6">
-            {step === 'teams' && (
+            {step === "teams" && (
               <Button
                 type="button"
                 variant="secondary"
@@ -276,7 +349,7 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
               </Button>
             )}
 
-            {step === 'info' ? (
+            {step === "info" ? (
               <>
                 <Button
                   type="button"
@@ -328,61 +401,3 @@ const CreateTournamentButton = ({ initialOpen = false }: { initialOpen?: boolean
 };
 
 export default CreateTournamentButton;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
