@@ -163,7 +163,7 @@ const BracketPage = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#0a1929] via-[#002F6C] to-[#0a1929]">
+    <div className="relative min-h-screen bg-linear-to-r from-[#0a1929] via-[#002F6C] to-[#0a1929]">
       <div className="relative z-10 py-8">
         {/* HEADER */}
         <div className="px-4 lg:px-8 mb-8">
@@ -177,13 +177,13 @@ const BracketPage = () => {
           </Button>
 
           {/* TITLE SECTION */}
-          <div className="bg-gradient-to-r from-[#002F6C] to-[#0055A4] rounded-2xl p-6 border border-[#FFD700]/30 shadow-2xl">
+          <div className="bg-linear-to-r from-[#002F6C] to-[#0055A4] rounded-2xl p-6 border border-[#FFD700]/30 shadow-2xl">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-3 text-white flex items-center gap-3 flex-wrap">
                   {tournament.name}
                   {final && !tournament.is_active && (
-                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#002F6C] px-4 py-2 rounded-lg shadow-lg">
+                    <div className="inline-flex items-center gap-2 bg-linear-to-r from-[#FFD700] to-[#FFA500] text-[#002F6C] px-4 py-2 rounded-lg shadow-lg">
                       <Crown className="w-6 h-6" />
                       <span className="text-lg font-black">
                         {getTeamName(final.winner_team_id)}
@@ -278,7 +278,7 @@ const BracketPage = () => {
 
             {/* CENTER - FINAL */}
             <div className="flex flex-col items-center justify-center px-6">
-              <div className="bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#002F6C] font-black text-sm px-6 py-2 rounded-lg mb-4 tracking-wider shadow-lg">
+              <div className="bg-linear-to-r from-[#FFD700] to-[#FFA500] text-[#002F6C] font-black text-sm px-6 py-2 rounded-lg mb-4 tracking-wider shadow-lg">
                 FINALE
               </div>
 
@@ -589,7 +589,7 @@ const MatchCard = ({
       )}
 
       <div
-        className={`relative bg-gradient-to-br from-[#001a3d] to-[#002F6C] rounded-lg p-3 border transition-all w-48 shadow-lg hover:shadow-xl ${
+        className={`relative bg-linear-to-r from-[#001a3d] to-[#002F6C] rounded-lg p-3 border transition-all w-48 shadow-lg hover:shadow-xl ${
           isFinal
             ? "border-2 border-[#FFD700] shadow-[#FFD700]/20"
             : "border-gray-700 hover:border-gray-600"
@@ -708,19 +708,19 @@ const TeamRow = ({
     <div
       className={`flex items-center gap-2 p-2 rounded transition-all relative ${
         isWinner
-          ? "bg-gradient-to-r from-[#0055A4] to-[#003d7a] shadow-md"
+          ? "bg-linear-to-r from-[#0055A4] to-[#003d7a] shadow-md"
           : "bg-[#002F6C]/50"
       }`}
     >
       {/* Crown for champion */}
       {isChampion && (
-        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-full p-1 shadow-lg z-10">
+        <div className="absolute -top-2 -right-2 bg-linear-to-r from-[#FFD700] to-[#FFA500] rounded-full p-1 shadow-lg z-10">
           <Crown className="w-4 h-4 text-[#002F6C]" />
         </div>
       )}
 
       {/* Logo */}
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         {teamId && teamLogo ? (
           <img
             src={teamLogo}
@@ -746,7 +746,7 @@ const TeamRow = ({
       </div>
 
       {/* Score */}
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         {isEditing ? (
           <input
             type="number"
