@@ -1,30 +1,52 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { Trophy, ArrowLeft, Calendar, MapPin, Users, Edit2, Check, X, Crown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { useBracket, useTournament, useTournamentFinal, useUpdateGameResult } from '../tournament/tournament.hooks';
-import { useTeams } from '../team/team.hooks';
-import type { Game } from './game.type';
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Trophy,
+  ArrowLeft,
+  Calendar,
+  MapPin,
+  Users,
+  Edit2,
+  Check,
+  X,
+  Crown,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import {
+  useBracket,
+  useTournament,
+  useTournamentFinal,
+  useUpdateGameResult,
+} from "../tournament/tournament.hooks";
+import { useTeams } from "../team/team.hooks";
+import type { Game } from "./game.type";
 
 const BracketPage = () => {
   const { tournamentId } = useParams<{ tournamentId: string }>();
   const navigate = useNavigate();
 
-  const { data: tournament, isLoading: tournamentLoading } = useTournament(Number(tournamentId));
-  const { data: games, isLoading: gamesLoading } = useBracket(Number(tournamentId));
+  const { data: tournament, isLoading: tournamentLoading } = useTournament(
+    Number(tournamentId),
+  );
+  const { data: games, isLoading: gamesLoading } = useBracket(
+    Number(tournamentId),
+  );
   const { data: teams } = useTeams();
   const { data: final } = useTournamentFinal(
     Number(tournamentId),
-    tournament?.is_active === false
+    tournament?.is_active === false,
   );
   const updateGame = useUpdateGameResult();
 
   const [editingGame, setEditingGame] = useState<number | null>(null);
-  const [scores, setScores] = useState<{ home: number; away: number }>({ home: 0, away: 0 });
+  const [scores, setScores] = useState<{ home: number; away: number }>({
+    home: 0,
+    away: 0,
+  });
 
   const getTeamName = (teamId?: number) => {
-    if (!teamId) return 'TBD';
-    return teams?.find((t) => t.id === teamId)?.name || 'TBD';
+    if (!teamId) return "TBD";
+    return teams?.find((t) => t.id === teamId)?.name || "TBD";
   };
 
   const getTeamLogo = (teamId?: number) => {
@@ -42,7 +64,7 @@ const BracketPage = () => {
 
   const handleSaveScore = async (gameId: number) => {
     if (scores.home === scores.away) {
-      alert('Non è consentito il pareggio');
+      alert("Non è consentito il pareggio");
       return;
     }
 
@@ -59,7 +81,7 @@ const BracketPage = () => {
       });
       setEditingGame(null);
     } catch (error) {
-      alert('Errore durante l\'aggiornamento del risultato');
+      alert("Errore durante l'aggiornamento del risultato");
     }
   };
 
@@ -69,33 +91,38 @@ const BracketPage = () => {
   };
 
   // Organizza i giochi per round
-  const gamesByRound = games?.reduce((acc, game) => {
-    const round = game.round ?? 1;
-    if (!acc[round]) {
-      acc[round] = [];
-    }
-    acc[round].push(game);
-    return acc;
-  }, {} as Record<number, Game[]>);
+  const gamesByRound = games?.reduce(
+    (acc, game) => {
+      const round = game.round ?? 1;
+      if (!acc[round]) {
+        acc[round] = [];
+      }
+      acc[round].push(game);
+      return acc;
+    },
+    {} as Record<number, Game[]>,
+  );
 
-  const rounds = gamesByRound ? Object.keys(gamesByRound).map(Number).sort((a, b) => a - b) : [];
+  const rounds = gamesByRound
+    ? Object.keys(gamesByRound)
+        .map(Number)
+        .sort((a, b) => a - b)
+    : [];
 
   const getRoundName = (round: number, totalRounds: number) => {
     const remaining = totalRounds - round + 1;
-    if (remaining === 1) return 'FINALE';
-    if (remaining === 2) return 'Semifinali';
-    if (remaining === 3) return 'Quarti';
-    if (remaining === 4) return 'Ottavi';
-    if (remaining === 5) return 'Sedicesimi';
+    if (remaining === 1) return "FINALE";
+    if (remaining === 2) return "Semifinali";
+    if (remaining === 3) return "Quarti";
+    if (remaining === 4) return "Ottavi";
+    if (remaining === 5) return "Sedicesimi";
     return `Round ${round}`;
   };
 
   const totalRounds = rounds.length;
   const finalRound = rounds[totalRounds - 1];
   const finalGame: Game | undefined =
-    finalRound !== undefined
-      ? gamesByRound?.[finalRound]?.[0]
-      : undefined;
+    finalRound !== undefined ? gamesByRound?.[finalRound]?.[0] : undefined;
 
   // Split each round in half for left/right bracket sides
   const leftSideRounds: { round: number; games: Game[] }[] = [];
@@ -107,12 +134,12 @@ const BracketPage = () => {
 
     leftSideRounds.push({
       round,
-      games: roundGames.slice(0, midpoint)
+      games: roundGames.slice(0, midpoint),
     });
 
     rightSideRounds.push({
       round,
-      games: roundGames.slice(midpoint)
+      games: roundGames.slice(midpoint),
     });
   });
 
@@ -140,7 +167,11 @@ const BracketPage = () => {
       <div className="relative z-10 py-8">
         {/* HEADER */}
         <div className="px-4 lg:px-8 mb-8">
-          <Button variant="ghost" onClick={() => navigate('/tournaments')} className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors" >
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/tournaments")}
+            className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors"
+          >
             <ArrowLeft className="w-5 h-5" />
             <span>Torna ai tornei</span>
           </Button>
@@ -154,14 +185,20 @@ const BracketPage = () => {
                   {final && !tournament.is_active && (
                     <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#002F6C] px-4 py-2 rounded-lg shadow-lg">
                       <Crown className="w-6 h-6" />
-                      <span className="text-lg font-black">{getTeamName(final.winner_team_id)}</span>
+                      <span className="text-lg font-black">
+                        {getTeamName(final.winner_team_id)}
+                      </span>
                     </div>
                   )}
                 </h1>
                 <div className="flex items-center gap-6 text-gray-300 text-sm flex-wrap">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    <span>{new Date(tournament.start_date).toLocaleDateString('it-IT')}</span>
+                    <span>
+                      {new Date(tournament.start_date).toLocaleDateString(
+                        "it-IT",
+                      )}
+                    </span>
                   </div>
                   {tournament.location && (
                     <div className="flex items-center gap-2">
@@ -178,12 +215,13 @@ const BracketPage = () => {
                 </div>
               </div>
               <div
-                className={`px-4 py-2 rounded-lg text-sm font-medium shadow-lg ${tournament.is_active
-                    ? 'bg-green-600/90 text-white'
-                    : 'bg-gray-600/90 text-white'
-                  }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium shadow-lg ${
+                  tournament.is_active
+                    ? "bg-green-600/90 text-white"
+                    : "bg-gray-600/90 text-white"
+                }`}
               >
-                {tournament.is_active ? 'In corso' : 'Terminato'}
+                {tournament.is_active ? "In corso" : "Terminato"}
               </div>
             </div>
           </div>
@@ -226,7 +264,7 @@ const BracketPage = () => {
                         finalGame?.completed &&
                         final?.winner_team_id &&
                         (game.home_team_fk === final.winner_team_id ||
-                          game.away_team_fk === final.winner_team_id)
+                          game.away_team_fk === final.winner_team_id),
                       )}
                       winnerId={final?.winner_team_id}
                       gameIndex={gameIndex}
@@ -307,7 +345,7 @@ const BracketPage = () => {
                         finalGame?.completed &&
                         final?.winner_team_id &&
                         (game.home_team_fk === final.winner_team_id ||
-                          game.away_team_fk === final.winner_team_id)
+                          game.away_team_fk === final.winner_team_id),
                       )}
                       winnerId={final?.winner_team_id}
                       gameIndex={gameIndex}
@@ -349,7 +387,7 @@ const BracketPage = () => {
                       finalGame?.completed &&
                       final?.winner_team_id &&
                       (game.home_team_fk === final.winner_team_id ||
-                        game.away_team_fk === final.winner_team_id)
+                        game.away_team_fk === final.winner_team_id),
                     )}
                     winnerId={final?.winner_team_id}
                     gameIndex={0}
@@ -383,13 +421,15 @@ interface MatchCardProps {
   getTeamLogo: (teamId?: number) => string | undefined;
   editingGame: number | null;
   scores: { home: number; away: number };
-  setScores: React.Dispatch<React.SetStateAction<{ home: number; away: number }>>;
+  setScores: React.Dispatch<
+    React.SetStateAction<{ home: number; away: number }>
+  >;
   handleEditGame: (game: Game) => void;
   handleSaveScore: (gameId: number) => void;
   handleCancelEdit: () => void;
   updateGame: any;
   showConnector?: boolean;
-  connectorSide?: 'left' | 'right';
+  connectorSide?: "left" | "right";
   isFinal?: boolean;
   isWinnerGame?: boolean;
   winnerId?: number;
@@ -410,19 +450,23 @@ const MatchCard = ({
   handleCancelEdit,
   updateGame,
   showConnector = false,
-  connectorSide = 'right',
+  connectorSide = "right",
   isFinal = false,
-  isWinnerGame = false,
   winnerId,
   gameIndex,
-  totalGames,
-  gapRem
+  gapRem,
 }: MatchCardProps) => {
   const isWinner = (isHome: boolean) => {
-    if (!game.completed || game.home_score === undefined || game.away_score === undefined) {
+    if (
+      !game.completed ||
+      game.home_score === undefined ||
+      game.away_score === undefined
+    ) {
       return false;
     }
-    return isHome ? game.home_score > game.away_score : game.away_score > game.home_score;
+    return isHome
+      ? game.home_score > game.away_score
+      : game.away_score > game.home_score;
   };
 
   const isChampion = (teamId?: number) => {
@@ -440,10 +484,10 @@ const MatchCard = ({
         <svg
           className="absolute top-1/2 pointer-events-none"
           style={{
-            [connectorSide === 'right' ? 'left' : 'right']: '100%',
+            [connectorSide === "right" ? "left" : "right"]: "100%",
             width: `${connectorLength + verticalLineLength}px`,
-            height: `${(gapRem * 16) + 150}px`,
-            transform: 'translateY(-50%)',
+            height: `${gapRem * 16 + 150}px`,
+            transform: "translateY(-50%)",
           }}
           overflow="visible"
         >
@@ -452,27 +496,51 @@ const MatchCard = ({
             <>
               {/* Linea orizzontale dal match */}
               <line
-                x1={connectorSide === 'right' ? 0 : connectorLength + verticalLineLength}
+                x1={
+                  connectorSide === "right"
+                    ? 0
+                    : connectorLength + verticalLineLength
+                }
                 y1="50%"
-                x2={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x2={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y2="50%"
                 stroke="rgba(255, 215, 0, 0.4)"
                 strokeWidth="2"
               />
               {/* Linea verticale verso il basso */}
               <line
-                x1={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x1={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y1="50%"
-                x2={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x2={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y2={`calc(50% + ${verticalLineLength}px)`}
                 stroke="rgba(255, 215, 0, 0.4)"
                 strokeWidth="2"
               />
               {/* Linea orizzontale finale */}
               <line
-                x1={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x1={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y1={`calc(50% + ${verticalLineLength}px)`}
-                x2={connectorSide === 'right' ? connectorLength + verticalLineLength : 0}
+                x2={
+                  connectorSide === "right"
+                    ? connectorLength + verticalLineLength
+                    : 0
+                }
                 y2={`calc(50% + ${verticalLineLength}px)`}
                 stroke="rgba(255, 215, 0, 0.4)"
                 strokeWidth="2"
@@ -483,18 +551,34 @@ const MatchCard = ({
             <>
               {/* Linea orizzontale dal match */}
               <line
-                x1={connectorSide === 'right' ? 0 : connectorLength + verticalLineLength}
+                x1={
+                  connectorSide === "right"
+                    ? 0
+                    : connectorLength + verticalLineLength
+                }
                 y1="50%"
-                x2={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x2={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y2="50%"
                 stroke="rgba(255, 215, 0, 0.4)"
                 strokeWidth="2"
               />
               {/* Linea verticale verso l'alto */}
               <line
-                x1={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x1={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y1="50%"
-                x2={connectorSide === 'right' ? connectorLength : verticalLineLength}
+                x2={
+                  connectorSide === "right"
+                    ? connectorLength
+                    : verticalLineLength
+                }
                 y2={`calc(50% - ${verticalLineLength}px)`}
                 stroke="rgba(255, 215, 0, 0.4)"
                 strokeWidth="2"
@@ -505,10 +589,11 @@ const MatchCard = ({
       )}
 
       <div
-        className={`relative bg-gradient-to-br from-[#001a3d] to-[#002F6C] rounded-lg p-3 border transition-all w-48 shadow-lg hover:shadow-xl ${isFinal
-            ? 'border-2 border-[#FFD700] shadow-[#FFD700]/20'
-            : 'border-gray-700 hover:border-gray-600'
-          }`}
+        className={`relative bg-gradient-to-br from-[#001a3d] to-[#002F6C] rounded-lg p-3 border transition-all w-48 shadow-lg hover:shadow-xl ${
+          isFinal
+            ? "border-2 border-[#FFD700] shadow-[#FFD700]/20"
+            : "border-gray-700 hover:border-gray-600"
+        }`}
       >
         {/* Edit button */}
         {!game.completed && game.home_team_fk && game.away_team_fk && (
@@ -540,7 +625,9 @@ const MatchCard = ({
             isChampion={isChampion(game.home_team_fk)}
             isEditing={editingGame === game.id}
             editScore={scores.home}
-            onScoreChange={(value) => setScores(prev => ({ ...prev, home: value }))}
+            onScoreChange={(value) =>
+              setScores((prev) => ({ ...prev, home: value }))
+            }
           />
 
           {/* Away Team */}
@@ -553,7 +640,9 @@ const MatchCard = ({
             isChampion={isChampion(game.away_team_fk)}
             isEditing={editingGame === game.id}
             editScore={scores.away}
-            onScoreChange={(value) => setScores(prev => ({ ...prev, away: value }))}
+            onScoreChange={(value) =>
+              setScores((prev) => ({ ...prev, away: value }))
+            }
           />
         </div>
 
@@ -613,14 +702,15 @@ const TeamRow = ({
   isChampion,
   isEditing,
   editScore,
-  onScoreChange
+  onScoreChange,
 }: TeamRowProps) => {
   return (
     <div
-      className={`flex items-center gap-2 p-2 rounded transition-all relative ${isWinner
-          ? 'bg-gradient-to-r from-[#0055A4] to-[#003d7a] shadow-md'
-          : 'bg-[#002F6C]/50'
-        }`}
+      className={`flex items-center gap-2 p-2 rounded transition-all relative ${
+        isWinner
+          ? "bg-gradient-to-r from-[#0055A4] to-[#003d7a] shadow-md"
+          : "bg-[#002F6C]/50"
+      }`}
     >
       {/* Crown for champion */}
       {isChampion && (
@@ -647,8 +737,9 @@ const TeamRow = ({
       {/* Team Name */}
       <div className="flex-1 min-w-0">
         <div
-          className={`text-xs font-semibold truncate ${teamId ? 'text-white' : 'text-gray-500 italic'
-            }`}
+          className={`text-xs font-semibold truncate ${
+            teamId ? "text-white" : "text-gray-500 italic"
+          }`}
         >
           {teamName}
         </div>
@@ -666,10 +757,11 @@ const TeamRow = ({
           />
         ) : (
           <span
-            className={`text-base font-bold ${isWinner ? 'text-white' : 'text-gray-400'
-              }`}
+            className={`text-base font-bold ${
+              isWinner ? "text-white" : "text-gray-400"
+            }`}
           >
-            {score ?? '-'}
+            {score ?? "-"}
           </span>
         )}
       </div>
