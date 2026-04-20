@@ -56,7 +56,7 @@ const TeamsPage = () => {
       ?.filter((team) =>
         team.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      .sort((a, b) => (b.tournaments_won ?? 0) - (a.tournaments_won ?? 0) || b.id - a.id) || [];
+      .sort((a, b) => a.name.localeCompare(b.name, 'it')) || [];
 
   const handleDelete = async (id: number, name: string) => {
     if (window.confirm(`Sei sicuro di voler eliminare ${name}?`)) {
