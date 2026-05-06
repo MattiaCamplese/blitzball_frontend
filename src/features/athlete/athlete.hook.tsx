@@ -5,6 +5,12 @@ export const useAthletes = () => {
   return useQuery({
     queryKey: ['athletes'],
     queryFn: AthleteService.getAll,
+    // Auto-retry up to 3 times if backend returns empty (Render cold-start)
+    refetchInterval: (query) => {
+      const count = query.state.dataUpdateCount ?? 0;
+      if (count < 3 && query.state.data?.length === 0) return 3000;
+      return false;
+    },
   });
 };
 

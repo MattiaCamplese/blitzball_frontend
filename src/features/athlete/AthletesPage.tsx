@@ -11,7 +11,7 @@ import AnimatedTitle from '@/components/ui/title';
 import AthleteDetailModal from './AthleteSchedeSimple';
 
 const AthletesPage = () => {
-  const { data: athletes, isLoading, error } = useAthletes();
+  const { data: athletes, isLoading, error, refetch } = useAthletes();
   const deleteAthlete = useDeleteAthlete();
   const updateAthlete = useUpdateAthlete();
   const [searchTerm, setSearchTerm] = useState('');
@@ -64,6 +64,8 @@ const AthletesPage = () => {
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  console.log('[AthletesPage] athletes from query:', athletes);
 
   const filteredAthletes = athletes?.filter(athlete =>
     `${athlete.first_name} ${athlete.last_name} ${athlete.fiscal_code}`
@@ -233,6 +235,11 @@ const AthletesPage = () => {
             <p className="text-gray-400 text-lg">
               {searchTerm ? 'Nessun atleta trovato con questi criteri' : 'Nessun atleta registrato'}
             </p>
+            {!searchTerm && (
+              <Button variant="secondary" onClick={() => refetch()} className="mt-4">
+                Ricarica
+              </Button>
+            )}
           </div>
         )}
       </div>
