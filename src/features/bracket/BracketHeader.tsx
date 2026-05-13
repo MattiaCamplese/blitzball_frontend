@@ -25,15 +25,15 @@ const BracketHeader = ({ tournament, final, gamesCount, getTeamName }: BracketHe
         <span>Torna ai tornei</span>
       </Button>
 
-      <div className="bg-gradient-to-r from-blue-900/50 to-blue-800/50 backdrop-blur-sm rounded-2xl p-6 border border-amber-400/30 shadow-2xl">
+      <div className="bg-linear-to-r from-blue-900/50 to-blue-800/50 backdrop-blur-sm rounded-2xl p-6 border border-amber-400/30 shadow-2xl">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3 flex-wrap">
-              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight wrap-break-word">
                 {tournament.name}
               </h1>
               {final && !tournament.is_active && final.winner_team_id && (
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-4 py-2 rounded-lg shadow-lg animate-pulse">
+                <div className="inline-flex items-center gap-2 bg-linear-to-r from-amber-400 to-orange-500 text-slate-900 px-4 py-2 rounded-lg shadow-lg animate-pulse">
                   <Crown className="w-6 h-6" />
                   <span className="text-lg font-black">{getTeamName(final.winner_team_id)}</span>
                 </div>
