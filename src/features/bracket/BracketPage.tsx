@@ -118,15 +118,16 @@ const BracketPage = () => {
   }
 
   return (
-    <div className="relative min-h-screen">
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/tornei.png')" }}
-      />
-      <div className="absolute inset-0 bg-slate-900/30" />
-
-      <div className="relative z-10 py-8">
+    <div
+      className="min-h-screen py-8"
+      style={{
+        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.3)), url('/tornei.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div>
         <BracketHeader
           tournament={tournament}
           final={final}

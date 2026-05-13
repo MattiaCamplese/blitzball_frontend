@@ -21,9 +21,42 @@ const MainLayout = () => {
         { to: "/halls_of_fame", icon: Award, label: "Hall of Fame" },
     ]
 
+    const NavItems = ({ isCollapsed }: { isCollapsed: boolean }) => (
+        <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {navItems.map((item) => {
+                const Icon = item.icon
+                const isActive = location.pathname === item.to
+                return (
+                    <Link
+                        key={item.to}
+                        to={item.to}
+                        className={cn(
+                            "flex items-center gap-3 px-4 py-3 rounded-lg transition-all group relative",
+                            isActive ? "bg-[#0055A4] text-white" : "text-white hover:bg-[#002F6C]",
+                            isCollapsed && "justify-center px-0"
+                        )}
+                    >
+                        <Icon className="w-5 h-5 shrink-0 text-white" />
+                        {!isCollapsed && (
+                            <span className="font-medium text-white">{item.label}</span>
+                        )}
+                        {isActive && (
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-[#FFD700] rounded-r-full" />
+                        )}
+                        {isCollapsed && (
+                            <div className="absolute left-full ml-6 px-3 py-2 bg-[#001F4D] border border-[#FFD700] rounded-lg text-white text-sm font-medium opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
+                                {item.label}
+                            </div>
+                        )}
+                    </Link>
+                )
+            })}
+        </nav>
+    )
+
     return (
         <div className="flex h-screen overflow-hidden">
-            {/* Mobile backdrop */}
+            {/* Mobile backdrop — only rendered when sidebar is open */}
             {mobileOpen && (
                 <div
                     className="fixed inset-0 bg-black/60 z-40 md:hidden"
@@ -31,92 +64,64 @@ const MainLayout = () => {
                 />
             )}
 
-            {/* Sidebar */}
+            {/* Mobile sidebar — conditionally rendered (no CSS transform tricks) */}
+            {mobileOpen && (
+                <aside className="fixed left-0 top-0 h-full w-64 bg-[#001F4D] border-r-2 border-[#FFD700] z-50 flex flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:hidden">
+                    <div className="h-16 flex items-center justify-between px-4">
+                        <Link to="/" className="flex items-center gap-3">
+                            <img src="/Palla.png" alt="Logo" className="w-9 h-9 rounded-full object-contain shrink-0" />
+                            <div className="flex items-baseline gap-1">
+                                <span className="font-bold text-2xl text-[#FFD700]">BLITZ</span>
+                                <span className="font-bold text-2xl text-white">BALL</span>
+                            </div>
+                        </Link>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setMobileOpen(false)}
+                            className="text-white/70 hover:text-white transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </Button>
+                    </div>
+                    <NavItems isCollapsed={false} />
+                </aside>
+            )}
+
+            {/* Desktop sidebar — always mounted, hidden on mobile via CSS */}
             <aside className={cn(
-                "fixed left-0 top-0 h-full bg-[#001F4D] border-r-2 border-[#FFD700] transition-all duration-300 z-50 flex flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
-                "w-64",
-                mobileOpen ? "translate-x-0" : "-translate-x-full",
-                collapsed ? "md:translate-x-0 md:w-16" : "md:translate-x-0 md:w-64"
+                "hidden md:flex fixed left-0 top-0 h-full bg-[#001F4D] border-r-2 border-[#FFD700] transition-all duration-300 z-50 flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+                collapsed ? "w-16" : "w-64"
             )}>
-                {/* Logo Header */}
-                <div className="h-16 md:h-20 flex items-center justify-between px-4">
+                <div className="h-20 flex items-center justify-between px-4">
                     <Link
                         to="/"
-                        className={cn("flex items-center gap-3 transition-all", collapsed && "md:justify-center md:w-full")}
+                        className={cn("flex items-center gap-3 transition-all", collapsed && "justify-center w-full")}
                     >
-                        <div className="shrink-0">
-                            <img
-                                src="/Palla.png"
-                                alt="Logo"
-                                className="aspect-square object-contain rounded-full shrink-0 w-9 h-9 md:w-10 md:h-10 lg:w-11 lg:h-11"
-                            />
-                        </div>
-                        <div className={cn("flex items-baseline gap-1", collapsed && "md:hidden")}>
-                            <span className="font-bold text-2xl text-[#FFD700]">BLITZ</span>
-                            <span className="font-bold text-2xl text-white">BALL</span>
-                        </div>
+                        <img src="/Palla.png" alt="Logo" className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-contain shrink-0" />
+                        {!collapsed && (
+                            <div className="flex items-baseline gap-1">
+                                <span className="font-bold text-2xl text-[#FFD700]">BLITZ</span>
+                                <span className="font-bold text-2xl text-white">BALL</span>
+                            </div>
+                        )}
                     </Link>
-
-                    {/* X button on mobile */}
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setMobileOpen(false)}
-                        className="text-white/70 hover:text-white transition-colors md:hidden"
-                    >
-                        <X className="w-5 h-5" />
-                    </Button>
-
-                    {/* Collapse button on desktop (only when expanded) */}
                     {!collapsed && (
                         <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => setCollapsed(true)}
-                            className="hidden md:flex text-white/70 hover:text-white transition-colors"
+                            className="text-white/70 hover:text-white transition-colors"
                         >
                             <ChevronLeft className="w-4 h-4" />
                         </Button>
                     )}
                 </div>
 
-                {/* Navigation */}
-                <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                    {navItems.map((item) => {
-                        const Icon = item.icon
-                        const isActive = location.pathname === item.to
-                        return (
-                            <Link
-                                key={item.to}
-                                to={item.to}
-                                className={cn(
-                                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all group relative",
-                                    isActive ? "bg-[#0055A4] text-white" : "text-white hover:bg-[#002F6C]",
-                                    collapsed && "md:justify-center md:px-0"
-                                )}
-                            >
-                                <Icon className="w-5 h-5 shrink-0 text-white" />
-                                <span className={cn("font-medium text-white", collapsed && "md:hidden")}>
-                                    {item.label}
-                                </span>
+                <NavItems isCollapsed={collapsed} />
 
-                                {isActive && (
-                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-[#FFD700] rounded-r-full" />
-                                )}
-
-                                {collapsed && (
-                                    <div className="hidden md:block absolute left-full ml-6 px-3 py-2 bg-[#001F4D] border border-[#FFD700] rounded-lg text-white text-sm font-medium opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
-                                        {item.label}
-                                    </div>
-                                )}
-                            </Link>
-                        )
-                    })}
-                </nav>
-
-                {/* Expand button when collapsed (desktop only) */}
                 {collapsed && (
-                    <div className="hidden md:block p-4">
+                    <div className="p-4">
                         <Button
                             variant="ghost"
                             size="icon"
@@ -153,7 +158,6 @@ const MainLayout = () => {
                     </Link>
                 </div>
 
-                {/* Page content */}
                 <main className="flex-1 overflow-auto">
                     <Outlet />
                 </main>

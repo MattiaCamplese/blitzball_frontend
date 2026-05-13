@@ -34,7 +34,7 @@ interface AnimatedTitleProps {
 const AnimatedTitle = ({ parts, className = "" }: AnimatedTitleProps) => {
     return (
         <motion.h1
-            className={`font-extrabold tracking-tight leading-tight mb-4 text-4xl sm:text-5xl lg:text-6xl ${className}`}
+            className={`font-extrabold tracking-tight leading-tight mb-4 text-3xl sm:text-5xl lg:text-6xl whitespace-nowrap ${className}`}
             variants={containerVariants}
             initial="hidden"
             animate="visible"

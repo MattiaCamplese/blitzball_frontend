@@ -41,11 +41,14 @@ const BracketGrid = ({
   }
 
   return (
-    <div className="pb-8 w-full">
-      <div className="w-full px-4 lg:px-8 overflow-x-auto">
+    <div
+      className="pb-8 w-full overflow-x-auto"
+      style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+    >
+      <div className="px-4 lg:px-8">
         <div
           ref={containerRef}
-          className={`relative flex items-center min-w-max w-full ${
+          className={`relative flex items-center min-w-max ${
             bracketLayout.length <= 3 ? 'justify-center gap-16' :
             bracketLayout.length <= 5 ? 'justify-center gap-12' :
             'justify-between'
