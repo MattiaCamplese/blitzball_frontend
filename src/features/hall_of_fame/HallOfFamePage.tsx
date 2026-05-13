@@ -1,4 +1,4 @@
-import { Trophy, Calendar, Star, Medal } from "lucide-react";
+import { Trophy, Calendar, Star, Medal, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { useHallOfFame } from "./hall_of_fame.hook";
@@ -73,14 +73,9 @@ export default function AlboOro() {
 
       {/* LISTA COMPLETA VITTORIE */}
       {isLoading ? (
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse bg-card border-border">
-              <CardContent className="p-6">
-                <div className="h-16 bg-secondary rounded" />
-              </CardContent>
-            </Card>
-          ))}
+        <div className="flex items-center justify-center gap-3 py-16 text-white">
+          <Loader2 className="w-6 h-6 animate-spin text-[#FFD700]" />
+          <span className="text-lg">Caricamento...</span>
         </div>
       ) : halls && halls.length > 0 ? (
         <div className="space-y-4">
