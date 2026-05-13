@@ -86,7 +86,7 @@ const AthletesPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full px-4 py-8 bg-transparent flex items-center justify-center">
+      <div className="min-h-full w-full px-4 py-8 bg-transparent flex items-center justify-center">
         <div className="text-white text-xl">Caricamento...</div>
       </div>
     );
@@ -94,7 +94,7 @@ const AthletesPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen w-full px-4 py-8 bg-transparent flex items-center justify-center">
+      <div className="min-h-full w-full px-4 py-8 bg-transparent flex items-center justify-center">
         <div className="bg-red-900/20 border border-red-500 rounded-xl p-6">
           <div className="text-red-500 text-xl mb-2">Errore nel caricamento</div>
           <div className="text-red-300 text-sm">
@@ -106,7 +106,7 @@ const AthletesPage = () => {
   }
 
   return (
-    <div className="min-h-screen w-full px-4 py-8 bg-transparent">
+    <div className="min-h-full w-full px-4 py-8 bg-transparent">
       <div className="max-w-6xl mx-auto">
 
         {/* HERO */}

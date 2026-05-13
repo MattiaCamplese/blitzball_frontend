@@ -71,7 +71,7 @@ const TeamsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full px-4 py-8 flex items-center justify-center">
+      <div className="min-h-full w-full px-4 py-8 flex items-center justify-center">
         <div className="text-white text-xl">Caricamento...</div>
       </div>
     );
@@ -79,7 +79,7 @@ const TeamsPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen w-full px-4 py-8 flex items-center justify-center">
+      <div className="min-h-full w-full px-4 py-8 flex items-center justify-center">
         <div className="bg-red-900/20 border border-red-500 rounded-xl p-6">
           <div className="text-red-500 text-xl mb-2">
             Errore nel caricamento
@@ -93,7 +93,7 @@ const TeamsPage = () => {
   }
 
   return (
-    <div className="min-h-screen w-full px-4 py-8 bg-transparent">
+    <div className="min-h-full w-full px-4 py-8 bg-transparent">
       <div className="max-w-6xl mx-auto">
 
         {/* HEADER */}

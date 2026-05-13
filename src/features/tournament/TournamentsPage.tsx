@@ -38,7 +38,7 @@ const TournamentsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full px-4 py-8 flex items-center justify-center">
+      <div className="min-h-full w-full px-4 py-8 flex items-center justify-center">
         <div className="text-white text-xl">Caricamento...</div>
       </div>
     );
@@ -46,7 +46,7 @@ const TournamentsPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen w-full px-4 py-8 flex items-center justify-center">
+      <div className="min-h-full w-full px-4 py-8 flex items-center justify-center">
         <div className="bg-red-900/20 border border-red-500 rounded-xl p-6">
           <div className="text-red-500 text-xl mb-2">
             Errore nel caricamento
@@ -60,7 +60,7 @@ const TournamentsPage = () => {
   }
 
   return (
-    <div className="min-h-screen w-full px-4 py-8 bg-transparent">
+    <div className="min-h-full w-full px-4 py-8 bg-transparent">
       <div className="max-w-6xl mx-auto">
 
         {/* HEADER */}
@@ -72,7 +72,7 @@ const TournamentsPage = () => {
                 Gestisci tutti i tornei registrati
               </p>
             </div>
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <CreateTournamentButton initialOpen={openCreate} />
             </div>
           </div>

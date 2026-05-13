@@ -55,7 +55,7 @@ const MainLayout = () => {
     )
 
     return (
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-dvh overflow-hidden">
             {/* Mobile backdrop — only rendered when sidebar is open */}
             {mobileOpen && (
                 <div
@@ -158,7 +158,7 @@ const MainLayout = () => {
                     </Link>
                 </div>
 
-                <main className="flex-1 overflow-auto">
+                <main className="flex-1 overflow-y-auto overflow-x-hidden">
                     <Outlet />
                 </main>
             </div>

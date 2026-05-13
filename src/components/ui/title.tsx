@@ -34,31 +34,35 @@ interface AnimatedTitleProps {
 const AnimatedTitle = ({ parts, className = "" }: AnimatedTitleProps) => {
     return (
         <motion.h1
-            className={`font-extrabold tracking-tight leading-tight mb-4 text-3xl sm:text-5xl lg:text-6xl whitespace-nowrap ${className}`}
+            className={`font-extrabold tracking-tight leading-tight mb-4 text-4xl sm:text-5xl lg:text-6xl ${className}`}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             style={{ perspective: 600 }}
         >
-            {parts.map((part, partIndex) =>
-                part.text.split("").map((char, i) =>
-                    char === " " ? (
-                        <motion.span
-                            key={`${partIndex}-${i}`}
-                            variants={letterVariants}
-                            className="inline-block w-3 sm:w-4"
-                        />
-                    ) : (
-                        <motion.span
-                            key={`${partIndex}-${i}`}
-                            variants={letterVariants}
-                            className={`inline-block ${part.className ?? "text-white"}`}
-                        >
-                            {char}
-                        </motion.span>
-                    )
-                )
-            )}
+            {parts.map((part, partIndex) => (
+                // Each part is wrapped in inline-block + whitespace-nowrap so wrapping
+                // only happens between parts, never mid-word.
+                <span key={partIndex} className="inline-block whitespace-nowrap">
+                    {part.text.split("").map((char, i) =>
+                        char === " " ? (
+                            <motion.span
+                                key={`${partIndex}-${i}`}
+                                variants={letterVariants}
+                                className="inline-block w-3 sm:w-4"
+                            />
+                        ) : (
+                            <motion.span
+                                key={`${partIndex}-${i}`}
+                                variants={letterVariants}
+                                className={`inline-block ${part.className ?? "text-white"}`}
+                            >
+                                {char}
+                            </motion.span>
+                        )
+                    )}
+                </span>
+            ))}
         </motion.h1>
     );
 };
