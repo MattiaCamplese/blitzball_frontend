@@ -66,7 +66,7 @@ const MainLayout = () => {
 
             {/* Mobile sidebar — conditionally rendered (no CSS transform tricks) */}
             {mobileOpen && (
-                <aside className="fixed left-0 top-0 h-full w-64 bg-[#001F4D] border-r-2 border-[#FFD700] z-50 flex flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:hidden">
+                <aside className="fixed right-0 top-0 h-full w-64 bg-[#001F4D] border-l-2 border-[#FFD700] z-50 flex flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:hidden">
                     <div className="h-16 flex items-center justify-between px-4">
                         <Link to="/" className="flex items-center gap-3">
                             <img src="/Palla.png" alt="Logo" className="w-9 h-9 rounded-full object-contain shrink-0" />
@@ -140,7 +140,14 @@ const MainLayout = () => {
                 collapsed ? "md:ml-16" : "md:ml-64"
             )}>
                 {/* Mobile top bar */}
-                <div className="md:hidden flex items-center gap-3 px-4 h-14 bg-[#001F4D] border-b-2 border-[#FFD700] shrink-0">
+                <div className="md:hidden flex items-center justify-between px-4 h-14 bg-[#001F4D] border-b-2 border-[#FFD700] shrink-0">
+                    <Link to="/" className="flex items-center gap-2">
+                        <img src="/Palla.png" alt="Logo" className="w-8 h-8 rounded-full object-contain" />
+                        <div className="flex items-baseline gap-1">
+                            <span className="font-bold text-lg text-[#FFD700]">BLITZ</span>
+                            <span className="font-bold text-lg text-white">BALL</span>
+                        </div>
+                    </Link>
                     <Button
                         variant="ghost"
                         size="icon"
@@ -149,16 +156,9 @@ const MainLayout = () => {
                     >
                         <Menu className="w-5 h-5" />
                     </Button>
-                    <Link to="/" className="flex items-center gap-2">
-                        <img src="/Palla.png" alt="Logo" className="w-8 h-8 rounded-full object-contain" />
-                        <div className="flex items-baseline gap-1">
-                            <span className="font-bold text-lg text-[#FFD700]">BLITZ</span>
-                            <span className="font-bold text-lg text-white">BALL</span>
-                        </div>
-                    </Link>
                 </div>
 
-                <main className="flex-1 overflow-y-auto overflow-x-hidden bg-[#001F4D] overscroll-y-contain">
+                <main className="flex-1 overflow-y-auto overflow-x-hidden bg-[#001F4D]">
                     <Outlet />
                 </main>
             </div>
