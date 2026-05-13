@@ -61,15 +61,10 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            render={
-              <Button
-                variant="ghost"
-                className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white hover:text-white border-transparent"
-                size="icon-sm"
-              />
-            }
+            className="absolute top-2 right-2 size-7 rounded-lg inline-flex items-center justify-center cursor-pointer"
+            style={{ backgroundColor: '#ef4444', color: 'white', border: 'none', outline: 'none' }}
           >
-            <XIcon />
+            <XIcon className="size-4" style={{ color: 'white' }} />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}
