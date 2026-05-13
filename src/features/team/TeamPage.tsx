@@ -239,7 +239,7 @@ const TeamsPage = () => {
 
       {/* EDIT DIALOG */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto [&>button]:text-black [&>button:hover]:text-red-700">
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader className="text-gray-700 mb-2">
             <DialogTitle>Modifica Team</DialogTitle>
             <DialogDescription>Modifica i dati del team</DialogDescription>

@@ -158,7 +158,7 @@ const MainLayout = () => {
                     </Link>
                 </div>
 
-                <main className="flex-1 overflow-y-auto overflow-x-hidden">
+                <main className="flex-1 overflow-y-auto overflow-x-hidden bg-[#001F4D] overscroll-y-contain">
                     <Outlet />
                 </main>
             </div>

@@ -123,7 +123,7 @@ const CreateAthleteButton = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:text-black [&>button:hover]:text-red-700">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className=" text-gray-700 mb-2">
           <DialogTitle>Nuovo Atleta</DialogTitle>
           <DialogDescription>

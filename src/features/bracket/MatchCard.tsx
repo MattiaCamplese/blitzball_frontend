@@ -52,7 +52,7 @@ const MatchCard = ({
       <div className={isFinal ? 'mb-3 mt-2' : 'mb-2'}>
         {canEdit && (
           <Button
-            variant="tertiary"
+            variant="primary"
             size="sm"
             onClick={onOpenResult}
             className={`w-full ${isFinal ? 'text-sm py-1' : 'text-xs py-0.5'}`}
@@ -62,7 +62,7 @@ const MatchCard = ({
         )}
         {game.completed && (
           <Button
-            variant="secondary"
+            variant="primary"
             size="sm"
             onClick={onOpenResult}
             className={`w-full ${isFinal ? 'text-sm py-1' : 'text-xs py-0.5'}`}

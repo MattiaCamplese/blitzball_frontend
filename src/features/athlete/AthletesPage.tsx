@@ -248,7 +248,7 @@ const AthletesPage = () => {
 
       {/* EDIT DIALOG */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:text-black [&>button:hover]:text-red-700">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="text-gray-700 mb-2">
             <DialogTitle>Modifica Atleta</DialogTitle>
             <DialogDescription>Modifica i dati dell'atleta</DialogDescription>
