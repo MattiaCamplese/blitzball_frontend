@@ -167,7 +167,7 @@ const TournamentsPage = () => {
 
               {/* BUTTON */}
               <Button
-                variant="secondary"
+                variant="primary"
                 onClick={() => handleViewBracket(tournament.id)}
                 className="w-full py-2">
                 Visualizza Bracket
