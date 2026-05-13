@@ -19,6 +19,7 @@ import {
   Calendar,
   MapPin,
   Users,
+  Search,
 } from "lucide-react";
 import { useState } from "react";
 import { useCreateTournament, useGenerateBracket } from "./tournament.hooks";
@@ -45,6 +46,7 @@ const CreateTournamentButton = ({
   });
 
   const [selectedTeamIds, setSelectedTeamIds] = useState<number[]>([]);
+  const [teamSearch, setTeamSearch] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -78,6 +80,7 @@ const CreateTournamentButton = ({
   const handleBack = () => {
     if (step === "teams") {
       setStep("info");
+      setTeamSearch("");
     }
   };
 
@@ -124,6 +127,7 @@ const CreateTournamentButton = ({
           number_of_teams: 4,
         });
         setSelectedTeamIds([]);
+        setTeamSearch("");
       },
       onError: (error: any) => {
         console.error("Errore completo:", error);
@@ -143,9 +147,14 @@ const CreateTournamentButton = ({
   };
 
   const availableTeams =
-    teams?.filter((team) => !selectedTeamIds.includes(team.id)) || [];
+    teams
+      ?.filter((team) => !selectedTeamIds.includes(team.id))
+      .filter((team) => team.name.toLowerCase().includes(teamSearch.toLowerCase()))
+      .sort((a, b) => a.name.localeCompare(b.name)) || [];
   const selectedTeams =
-    teams?.filter((team) => selectedTeamIds.includes(team.id)) || [];
+    teams
+      ?.filter((team) => selectedTeamIds.includes(team.id))
+      .sort((a, b) => a.name.localeCompare(b.name)) || [];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -306,6 +315,16 @@ const CreateTournamentButton = ({
                 <h3 className="text-sm font-medium text-gray-700 mb-2">
                   Team Disponibili
                 </h3>
+                <div className="relative mb-2">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Cerca squadra..."
+                    value={teamSearch}
+                    onChange={(e) => setTeamSearch(e.target.value)}
+                    className="w-full bg-gray-100 text-gray-700 pl-9 pr-4 py-2 rounded-lg border border-gray-300 focus:border-[#0055A4] focus:outline-none transition text-sm"
+                  />
+                </div>
                 <div className="max-h-75 overflow-y-auto space-y-2">
                   {availableTeams.map((team) => (
                     <div
